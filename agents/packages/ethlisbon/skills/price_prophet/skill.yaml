@@ -1,0 +1,127 @@
+name: price_prophet
+author: ethlisbon
+version: 0.1.0
+type: skill
+description: The scaffold skill is a scaffold for your own skill implementation.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeifyk7ubcdzsngymfhiz67n6ut5pb4p6xaeto652vpsyffkhpjuuuu
+  behaviours.py: bafybeib5slrlulhbqgo6lpj7efpcijgb6qrzdepeugds7a4rxagf5srvh4
+  dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
+  handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
+  models.py: bafybeihzggzu2ez6imu65uph2xyuzmfqnegx7kzlivfgszci5twh5bc7le
+  payloads.py: bafybeidyvw4v3xivfblvcqxdlvp6yc4cqwrqurytgjkazwow3xi3mmjwk4
+  rounds.py: bafybeihxylgecqnp2tpa7jnxx6z27wn5c5kbprufto2vro6pqhqmzi2bge
+  tests/__init__.py: bafybeiaxqzwmh36bhquqztcyrkxjjkz5cctseqetglrwdezgnkjrtg2654
+  tests/test_behaviours.py: bafybeiatyqrwb4cxd3pwyelpnyxmg3nvlacozbws52pqicodb6hiyuxnui
+  tests/test_dialogues.py: bafybeihyoc6l6wazvo4uxzhfyxkd5lyuiiamyix5mhjx72glew3ylp24dy
+  tests/test_handlers.py: bafybeidl7e6nkrwakda6ntmyz4qtzrqfla4uob3ffg3z2ify3meeq75dea
+  tests/test_models.py: bafybeifl7r2yazp4wwd3o4fjkpuinrrphtc5iiealbsg6wvavlhz5spbe4
+  tests/test_payloads.py: bafybeidsi4abx3noiffkaazr4vgvuck2ftq55eufvi4jvglj2774kscjfm
+  tests/test_rounds.py: bafybeidau3ahpzatilhpgmpjodd25zggnhg6fdn7cjejozjyhqaxqzp27y
+fingerprint_ignore_patterns: []
+connections: []
+contracts: []
+protocols: []
+skills:
+- valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
+behaviours:
+  main:
+    args: {}
+    class_name: PriceProphetRoundBehaviour
+handlers:
+  abci:
+    args: {}
+    class_name: ABCIRoundHandler
+  contract_api:
+    args: {}
+    class_name: ContractApiHandler
+  http:
+    args: {}
+    class_name: HttpHandler
+  ledger_api:
+    args: {}
+    class_name: LedgerApiHandler
+  signing:
+    args: {}
+    class_name: SigningHandler
+  tendermint:
+    args: {}
+    class_name: TendermintHandler
+models:
+  abci_dialogues:
+    args: {}
+    class_name: AbciDialogues
+  benchmark_tool:
+    args:
+      log_dir: /logs
+    class_name: BenchmarkTool
+  contract_api_dialogues:
+    args: {}
+    class_name: ContractApiDialogues
+  http_dialogues:
+    args: {}
+    class_name: HttpDialogues
+  ledger_api_dialogues:
+    args: {}
+    class_name: LedgerApiDialogues
+  params:
+    args:
+      cleanup_history_depth: 1
+      cleanup_history_depth_current: null
+      consensus:
+        max_participants: 1
+      drand_public_key: 868f005eb8e6e4ca0a47c8a77ceaa5309a47978a7c71bc5cce96366b5d7a569937c529eeda66c7293784a9402801af31
+      finalize_timeout: 60.0
+      genesis_config:
+        chain_id: chain-c4daS1
+        consensus_params:
+          block:
+            max_bytes: '22020096'
+            max_gas: '-1'
+            time_iota_ms: '1000'
+          evidence:
+            max_age_duration: '172800000000000'
+            max_age_num_blocks: '100000'
+            max_bytes: '1048576'
+          validator:
+            pub_key_types:
+            - ed25519
+          version: {}
+        genesis_time: '2022-05-20T16:00:21.735122717Z'
+        voting_power: '10'
+      history_check_timeout: 1205
+      keeper_allowed_retries: 3
+      keeper_timeout: 30.0
+      max_healthcheck: 120
+      observation_interval: 10
+      on_chain_service_id: null
+      reset_tendermint_after: 2
+      retry_attempts: 400
+      retry_timeout: 3
+      round_timeout_seconds: 30.0
+      service_id: price_prophet
+      service_registry_address: null
+      setup: {}
+      sleep_time: 1
+      tendermint_check_sleep_delay: 3
+      tendermint_com_url: http://localhost:8080
+      tendermint_max_retries: 5
+      tendermint_url: http://localhost:26657
+      validate_timeout: 1205
+    class_name: Params
+  requests:
+    args: {}
+    class_name: Requests
+  signing_dialogues:
+    args: {}
+    class_name: SigningDialogues
+  state:
+    args: {}
+    class_name: SharedState
+  tendermint_dialogues:
+    args: {}
+    class_name: TendermintDialogues
+dependencies: {}
+is_abstract: false
