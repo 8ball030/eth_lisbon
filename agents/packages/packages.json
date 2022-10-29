@@ -20,7 +20,7 @@
     "skill/valory/transaction_settlement_abci/0.1.0": "bafybeiaqfxy3z2ee736n3hmrec4zrij3esk3b4pbln7ayealpobcg2qmti",
     "connection/fetchai/http_server/0.22.0": "bafybeihtdignhuz6hjmay5jjcs6eqkfm4ispvk2upr3rynallaz2heo2ti",
     "protocol/fetchai/default/1.0.0": "bafybeigwlziluwyzq66gfc2r4ln4j6xj5ovhijk4btddjkv6ej73ilhjai",
-    "skill/ethlisbon/price_prophet/0.1.0": "bafybeif6vm3lm2dftusrjrss2gjgse5ea7twgqucwv5nafycoyl2tivrq4",
-    "agent/ethlisbon/price_prophet/0.1.0": "bafybeiaph35wg3tuva3rdyvn4gancsnkgo6od4i37yi676aba46lr7eo5a",
-    "service/ethlisbon/price_prophet/0.1.0": "bafybeichltn3y7qrev3jqqzxmg4jnjuzlktep3y6cqleburh433fbu22gm"
+    "skill/ethlisbon/price_prophet/0.1.0": "bafybeiee5fgbhfmoeqrnqxhfcy6qbscpu6aqnwszjofp2l3ynhvs4bksw4",
+    "agent/ethlisbon/price_prophet/0.1.0": "bafybeihum3idf72j7vpjlv5zpifnuzocwvtwctmwbdcy6jxm2irrk7eazy",
+    "service/ethlisbon/price_prophet/0.1.0": "bafybeibh7ufvvasqu74n4kxjcbxtsshadvywydr236rinz2luhoyxq4mha"
 }
