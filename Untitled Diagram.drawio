@@ -1,1 +1,45 @@
-<mxfile host="app.diagrams.net" modified="2022-10-29T14:30:27.789Z" agent="5.0 (X11)" etag="0GpzAXJnel4KhXzseBg9" version="20.5.1" type="github"><diagram id="ymXbCBO52tN5BZggkHDi" name="Page-1">3VhRc5pAEP41zrQP7QgniI8NksRpmmY00yR9u8AGrkWOORbF/PoecogETGiqsZMn7z52b5dvv12QHrHn2ZmgcfCNexD29L6X9ci4p+sasXT5kyOrAhmSQQH4gnnKqAJm7BEU2FdoyjxIaobIeYgsroMujyJwsYZRIfiybvbAw3rUmPrQAGYuDZvoDfMwKFBLH1b4OTA/KCNr5qi4MqelsbqTJKAeX25BxOkRW3COxWqe2RDm5JW8FH6nO65uEhMQYReH+PfdVL+4PPmKjwMtmQpn/DP7pKqzoGGqbrinm6E878RjC7n08+WVAI+5yHhk8wgFlTQro3tR2pzTJM+msARvvWYuNA1LRCa6FaIlanfXNbu4Kku2DBjCLKZuvl9KWUqjAOeh3GlySZO4EMoDy2Si5QELEAjZTm61TcWk1IHPAcVKmigHY6SKrFRuDNR+WWlGK7FgWy8lSJVO/c3ZVSnlQlXzLypLulR2EiGIB8mUTXcVtoncBMwN8pR9X4BPEfLKYyBr3e/iPoEMXGn7XcYLoWjdF2K/K61oI6OmFd1o0Qpp0wo5lFaMhlamQPMePk2jdd/L5QcehO4in+QU6ccGkYKnkZdTNO5Lml6gdQ8sEqvecYS0sGi0sGgeikRNa5ACnnyWqC0XGHCfRzR0KvSkTltlc8F5rMj6BYgr9WCkKfI2KvNAzxMp8+KpcOGZGzDV45UKH/ClydIsjICQIlvU89g7y2aXsWanCfK5NJs49Vnzyinx1uLW69rWWrQ9sN5S26NjSBsyhre5+2dD7e62rowzdfJ6s1KbPbbDsGM7mMdsh2GjHU6vb4+u3ydvQ22jWX/T0dxvUPL+9Wv9oy6V6xVnMnI1mswds6k8ougX5fWkbps0Xl9KqyF4W4a6pwkcXfVk8L/JfnBM2Wtboq9a4OCy1/SOc1s/5twus9zS8Zcz5/JaQjNn+mNiO0eX86azy/+01uH0LLfVh5BiVFSfk4jzBw==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-10-29T14:30:49.237Z" agent="5.0 (X11)" etag="x-VIGOl5AqKSOvt39EgQ" version="20.5.1" type="github">
+  <diagram id="ymXbCBO52tN5BZggkHDi" name="Page-1">
+    <mxGraphModel dx="1382" dy="734" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-2" value="&lt;div&gt;PredictionContract&lt;br&gt;Has predicted price&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="590" y="540" width="140" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-3" value="&lt;div&gt;InterfaceCantract&lt;br&gt;&lt;br&gt;Which aggregates the &lt;br&gt;&lt;br&gt;Iexec Oracle contract&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="195" y="250" width="130" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-5" value="Read Function (ohlcv data)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="380" y="330" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="pkYR2LNBKtz41sRrEDZx-6" target="pkYR2LNBKtz41sRrEDZx-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-6" value="&lt;div&gt;Custom IExec Oracle&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="20" y="130" width="480" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="pkYR2LNBKtz41sRrEDZx-7" target="pkYR2LNBKtz41sRrEDZx-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-7" value="FTX" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="pkYR2LNBKtz41sRrEDZx-8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="260" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-8" value="Coinbase" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="pkYR2LNBKtz41sRrEDZx-12" target="pkYR2LNBKtz41sRrEDZx-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pkYR2LNBKtz41sRrEDZx-12" value="AGENT SERVICE" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="130" y="580" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
