@@ -23,7 +23,7 @@ from typing import Any
 
 from packages.ethlisbon.skills.price_prophet.composition import ComposedPriceProphetAbciApp
 from packages.valory.skills.abstract_round_abci.models import (
-    BenchmarkTool as BaseBenchmarkTool,
+    BenchmarkTool as BaseBenchmarkTool, BaseParams,
 )
 from packages.valory.skills.abstract_round_abci.models import Requests as BaseRequests
 from packages.valory.skills.abstract_round_abci.models import (
@@ -40,8 +40,17 @@ class SharedState(BaseSharedState):
         """Initialize the state."""
         super().__init__(*args, abci_app_cls=ComposedPriceProphetAbciApp, **kwargs)
 
+class PriceProphetParams(BaseParams):
+    """Params object."""
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize the parameters object."""
+        self.price_prediction_contract_address = self._ensure(
+            "price_prediction_contract_address", kwargs
+        )
+        super().__init__(*args, **kwargs)
 
-class Params(TransactionParams):
+
+class Params(PriceProphetParams, TransactionParams):
     """A model to represent params for multiple abci apps."""
 
 
