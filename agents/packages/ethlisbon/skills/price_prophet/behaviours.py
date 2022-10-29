@@ -155,7 +155,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
             data: List[List[float]] = ccxt.kraken().fetch_ohlcv("BTC/USDT")
             df = pd.DataFrame(data, columns=columns)
             content = df.to_json()
-            self.context.logger.info.(f"Price: {df["close"][-1]}")
+
             payload = RequestDataPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
