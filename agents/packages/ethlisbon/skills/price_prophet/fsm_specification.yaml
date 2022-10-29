@@ -20,18 +20,18 @@ states:
 - TransactionRound
 - FinishedTransactionRound
 transition_func:
-    (RequestDataRound, DONE): ValidateDataRound
+    (RequestDataRound, DONE): AnnotateDataRound
     (RequestDataRound, ROUND_TIMEOUT): RequestDataRound
     (RequestDataRound, NO_MAJORITY): RequestDataRound
-    (ValidateDataRound, DONE): StoreDataRound
-    (ValidateDataRound, ROUND_TIMEOUT): RequestDataRound
-    (ValidateDataRound, NO_MAJORITY): RequestDataRound
-    (StoreDataRound, DONE): AnnotateDataRound
-    (StoreDataRound, ROUND_TIMEOUT): RequestDataRound
-    (StoreDataRound, NO_MAJORITY): RequestDataRound
-    (AnnotateDataRound, DONE): TrainModelRound
+    (AnnotateDataRound, DONE): StoreDataRound
     (AnnotateDataRound, ROUND_TIMEOUT): RequestDataRound
     (AnnotateDataRound, NO_MAJORITY): RequestDataRound
+    (StoreDataRound, DONE): ValidateDataRound
+    (StoreDataRound, ROUND_TIMEOUT): RequestDataRound
+    (StoreDataRound, NO_MAJORITY): RequestDataRound
+    (ValidateDataRound, DONE): TrainModelRound
+    (ValidateDataRound, ROUND_TIMEOUT): RequestDataRound
+    (ValidateDataRound, NO_MAJORITY): RequestDataRound
     (TrainModelRound, DONE): WeightSharingRound
     (TrainModelRound, ROUND_TIMEOUT): RequestDataRound
     (TrainModelRound, NO_MAJORITY): RequestDataRound
