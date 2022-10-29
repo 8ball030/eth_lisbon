@@ -43,15 +43,8 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 
 from packages.ethlisbon.skills.price_prophet.ml_tools import (
     COLUMNS,
-    Y_TARGET,
-    STEPS_INTO_THE_FUTURE,
-    LAGS_GRID,
-    PARAM_GRID,
-    impute,
     compute_indicators,
-    split_train_test,
-    forecaster,
-    grid_search_forecaster,
+    train_model,
 )
 from packages.ethlisbon.skills.price_prophet.models import Params
 from packages.ethlisbon.skills.price_prophet.rounds import (
@@ -81,6 +74,7 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 
 SAFE_GAS = 0
 ETH_VALUE = 0
+
 
 class PriceProphetBaseBehaviour(BaseBehaviour):
     """Base behaviour for the common apps' skill."""
@@ -233,42 +227,21 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             random_state = self.synchronized_data.period_count
             most_voted: JSONLike = self.get_strict(AnnotateDataRound.selection_key)
-            results_grid = self.train_model(pd.read_json(most_voted), random_state)
-            content, sender = results_grid.to_json(), self.context.agent_address
-            payload = TrainModelPayload(sender=sender, content=content)
+            try:
+                results_grid = train_model(pd.read_json(most_voted), random_state)
+                self.context.shared_state[TrainModelRound.selection_key] = results_grid
+            except Exception as e:
+                results_grid = None
+                self.context.logger.error(f"Failed to complete training forecaster: {e}")
+
+            sender = self.context.agent_address
+            payload = TrainModelPayload(sender=sender, content=bool(results_grid))
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
             yield from self.wait_until_round_end()
 
         self.set_done()
-
-    def train_model(self, x, random_state):
-        """Train model"""
-
-        # currently we interpolate and discard features with NaN
-        x_imputed = impute(x)
-        x_train, x_test = split_train_test(x_imputed)
-        forecaster.regressor.random_state = random_state
-
-        # this runs the grid search
-        # currently still univariate (without exogenous variables)
-        results_grid = grid_search_forecaster(
-            forecaster=forecaster,
-            y=x_train[Y_TARGET],
-            param_grid=PARAM_GRID,
-            lags_grid=LAGS_GRID,
-            steps=STEPS_INTO_THE_FUTURE,
-            refit=True,  # set False to speed up
-            metric="mean_squared_error",
-            initial_train_size=x_train.shape[0] // 2,
-            fixed_train_size=False,
-            return_best=True,
-            verbose=False,
-        )
-
-        # ['lags', 'params', 'mean_squared_error', 'max_depth', 'n_estimators']
-        return results_grid
 
 
 class TransactionBehaviour(PriceProphetBaseBehaviour):
@@ -365,6 +338,7 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
         data = bytes.fromhex(data_str)
         return data
 
+
 class ValidateDataBehaviour(PriceProphetBaseBehaviour):
     """ValidateDataBehaviour"""
 
@@ -391,18 +365,17 @@ class ValidateDataBehaviour(PriceProphetBaseBehaviour):
 class WeightSharingBehaviour(PriceProphetBaseBehaviour):
     """WeightSharingBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "weight_sharing"
     matching_round: Type[AbstractRound] = WeightSharingRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-            payload = WeightSharingPayload(sender=sender, content=...)
+            # results_grid must exist from previous round else there is a logic error in the FSM
+            results_grid: pd.DataFrame = self.context.shared_state[TrainModelRound.selection_key]
+            sender, content = self.context.agent_address, results_grid.to_json()
+            payload = WeightSharingPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
