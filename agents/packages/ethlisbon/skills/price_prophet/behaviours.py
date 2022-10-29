@@ -68,6 +68,7 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 
 # __repr__ display them as dicts, all are in fact classes
 TA_INDICATORS = list(map(abstract.Function, talib.get_functions()))
+COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
 
 
 def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
@@ -183,14 +184,10 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
 
         self.context.logger.info(f"Retrieving data for {self.market}")
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-
-            columns = ["timestamp", "open", "hi", "low", "close", "volume"]
             result = requests.get(self.endpoint_url)
             data: List[List[float]] = json.loads(result.content)["result"]
-            df = pd.DataFrame(data, columns=columns)
-            content = df.to_json()
-
+            content = pd.DataFrame(data, columns=COLUMNS).to_json()
+            sender = self.context.agent_address
             payload = RequestDataPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
