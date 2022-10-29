@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import get from 'lodash/get';
 import {
   Typography, Card, Statistic, Row, Col,
-} from 'antd';
+} from 'antd/lib';
 import { COLOR } from 'util/theme';
 import { DataContext } from 'common-util/context';
 import { ChartContainer } from './styles';

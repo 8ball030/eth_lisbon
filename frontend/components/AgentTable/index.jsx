@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Tag, Typography } from 'antd';
+import { Table, Tag, Typography } from 'antd/lib';
 import { AgentTableContainer } from './styles';
 
 const { Title } = Typography;

@@ -1,4 +1,4 @@
-import { Layout } from 'antd';
+import { Layout } from 'antd/lib';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import Login from '../Login';

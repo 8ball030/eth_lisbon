@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Table } from 'antd';
+import { Table } from 'antd/lib';
 import { DataContext } from 'common-util/context';
 
 const columns = [
