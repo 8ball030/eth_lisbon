@@ -1,6 +1,9 @@
-# Sample Hardhat Project
+# Price Prophet (Price Prediction Contract)
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+PricePrediction.sol deployed to
+> 0x6D6754DD2DFc1EcA7F2aD982d48bEbAAB44E7F73
+
+---
 
 Try running some of the following tasks:
 
