@@ -11,7 +11,7 @@ export const getContract = (p, chainId) => {
 
   // Goerli has separate contract
   const contract = new web3.eth.Contract(
-    chainId === 5 ? CONTRACT_ABI_GOERLI.abi : MAIN_CONTRACT_ABI.abi,
+    chainId === 5 ? CONTRACT_ABI_GOERLI : MAIN_CONTRACT_ABI,
     chainId === 5 ? CONTRACT_ADDRESS_GOERLI : MAIN_CONTRACT_ADDRESS,
   );
   return contract;
