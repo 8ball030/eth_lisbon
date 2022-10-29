@@ -21,10 +21,15 @@
 
 import json
 import logging
-from typing import Generator, List, Set, Type, cast
+from typing import Generator, List, Set, Type, cast, Optional
 
 import requests
 import pandas as pd
+
+from packages.ethlisbon.contracts.price_prophet.contract import PricePredictionContract
+from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
+from packages.valory.protocols.contract_api import ContractApiMessage
+from packages.valory.skills.transaction_settlement_abci.payload_tools import hash_payload_to_hex
 
 try:
     import talib
@@ -74,7 +79,8 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 # __repr__ display them as dicts, all are in fact classes
 TA_INDICATORS = list(map(abstract.Function, talib.get_functions()))
 COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
-
+SAFE_GAS = 0
+ETH_VALUE = 0
 
 def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
     """Compute TA indicators"""
@@ -254,18 +260,17 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
 class TransactionBehaviour(PriceProphetBaseBehaviour):
     """TransactionBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
-    behaviour_id: str = "transaction"
+    state_id: str = "transaction"
+    behaviour_id: str = "transaction_behaviour"
     matching_round: Type[AbstractRound] = TransactionRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            payload_data = yield from self.get_tx()
             sender = self.context.agent_address
-            payload = TransactionPayload(sender=sender, content=...)
+            payload = TransactionPayload(sender=sender, content=payload_data)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -273,6 +278,78 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
 
         self.set_done()
 
+    def get_tx(self) -> Generator[None, None, str]:
+        """Prepares the updatePriceData tx."""
+        update_weights_gradually_tx_data = (
+            yield from self._get_update_price_data_tx()
+        )
+        if update_weights_gradually_tx_data is None:
+            return ""
+
+        safe_tx_hash = yield from self._get_safe_tx_hash(
+            update_weights_gradually_tx_data
+        )
+        if safe_tx_hash is None:
+            return ""
+
+        payload_data = hash_payload_to_hex(
+            safe_tx_hash=safe_tx_hash,
+            ether_value=ETH_VALUE,
+            safe_tx_gas=SAFE_GAS,
+            to_address=self.params.price_prediction_contract_address,
+            data=update_weights_gradually_tx_data,
+        )
+        return payload_data
+
+    def _get_safe_tx_hash(self, data: bytes) -> Generator[None, None, Optional[str]]:
+        """Prepares and returns the safe tx hash."""
+        response = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            contract_address=self.synchronized_data.db.get("safe_contract_address"),
+            contract_id=str(GnosisSafeContract.contract_id),
+            contract_callable="get_raw_safe_transaction_hash",
+            to_address=self.params.price_prediction_contract_address,
+            value=ETH_VALUE,
+            data=data,
+            safe_tx_gas=SAFE_GAS,
+        )
+        if response.performative != ContractApiMessage.Performative.STATE:
+            self.context.logger.error(
+                f"Couldn't get safe hash. "
+                f"Expected response performative {ContractApiMessage.Performative.STATE.value}, "  # type: ignore
+                f"received {response.performative.value}."
+            )
+            return None
+
+        tx_hash = cast(str, response.state.body["tx_hash"])[2:]
+        return tx_hash
+
+    def _get_update_price_data_tx(
+        self,
+    ) -> Generator[None, None, Optional[bytes]]:
+        """Get the tx data."""
+        rate_of_change = 1  # TODO: get this from synchronized_data
+        price = 1  # TODO: get this from synchronized_data
+        response = yield from self.get_contract_api_response(
+            performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
+            contract_id=str(PricePredictionContract.contract_id),
+            contract_callable="encode_update_price_tx",
+            contract_address=self.params.price_prediction_contract_address,
+            rate_of_change=rate_of_change,
+            price=price,
+        )
+
+        if response.performative != ContractApiMessage.Performative.STATE:
+            self.context.logger.error(
+                f"Couldn't get tx data for updatePriceData(). "
+                f"Expected response performative {ContractApiMessage.Performative.STATE.value}, "  # type: ignore
+                f"received {response.performative.value}."
+            )
+            return None
+
+        data_str = cast(str, response.state.body["data"])[2:]
+        data = bytes.fromhex(data_str)
+        return data
 
 class ValidateDataBehaviour(PriceProphetBaseBehaviour):
     """ValidateDataBehaviour"""

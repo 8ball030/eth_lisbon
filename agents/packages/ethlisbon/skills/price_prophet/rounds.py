@@ -140,8 +140,8 @@ class TransactionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "transaction"
     allowed_tx_type: Optional[TransactionType] = TransactionPayload.transaction_type
     payload_attribute: str = "transaction"
-    collection_key: str = "participant_to_transaction"
-    selection_key: str = "most_voted_transaction"
+    collection_key: str = "participant_to_tx_hash"
+    selection_key: str = "most_voted_tx_hash"
 
 
 class ValidateDataRound(VotingRound, BaseRoundMixin):
