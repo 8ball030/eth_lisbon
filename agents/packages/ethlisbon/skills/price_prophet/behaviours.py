@@ -24,6 +24,11 @@ from typing import Generator, List, Set, Type, cast
 import ccxt
 import pandas as pd
 
+try:
+    import talib
+except ImportError:
+    raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
+
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -155,7 +160,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
             data: List[List[float]] = ccxt.kraken().fetch_ohlcv("BTC/USDT")
             df = pd.DataFrame(data, columns=columns)
             content = df.to_json()
-            self.context.logger.info.(f"Price: {df["close"][-1]}")
+
             payload = RequestDataPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
