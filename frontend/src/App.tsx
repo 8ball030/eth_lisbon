@@ -1,5 +1,6 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
+import AgentTable from './components/AgentTable';
 
 export const Container = createGlobalStyle`
   body {
@@ -17,15 +18,13 @@ export const Container = createGlobalStyle`
   }
 `;
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <header className="App-header">
-        <p>Hello World!</p>
-      </header>
+    <>
       <Container />
-    </div>
+      <AgentTable />
+    </>
   );
-}
+};
 
 export default App;
