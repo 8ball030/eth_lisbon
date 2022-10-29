@@ -21,12 +21,12 @@
 
 import json
 import logging
-from typing import Generator, List, Set, Type, cast, Optional
+from typing import Generator, List, Set, Type, cast, Optional, Any
 
 import requests
 import pandas as pd
 
-from packages.ethlisbon.contracts.price_prophet.contract import PricePredictionContract
+from packages.ethlisbon.contracts.price_prediction.contract import PricePredictionContract
 from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
 from packages.valory.protocols.contract_api import ContractApiMessage
 from packages.valory.skills.transaction_settlement_abci.payload_tools import hash_payload_to_hex

@@ -7,7 +7,7 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeidxqkrijrggyl57uzawq3mdnureffua2t3mcj2m6lwgbwtzpwhgji
+  behaviours.py: bafybeieqtcdbq5jiiytg7flfdpvu5iskwn77m2pa463zoqa4cj4564lbqu
   composition.py: bafybeihkmbe6pbcjkwdufgtv3lbeyr45jb6wcsziuvl7szonnx4t2ztifq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeihtlrmy7rudbebbohztrajwcpl6bn2spch2ppxv25qrsttiidnnvm
@@ -21,7 +21,8 @@ connections: []
 contracts:
 - ethlisbon/price_prediction:0.1.0:bafybeia3njcqwcvqvay4dluryuxfp4iajo6co2acm55okon4wyxqfktbda
 - valory/gnosis_safe:0.1.0:bafybeihjqtlmvgxre2zmyuyddzglxh6irnxk6ha7q4vmyiyhfskoqffpfe
-protocols: []
+protocols:
+- valory/contract_api:1.0.0:bafybeiaxbrvgtbdrh4lslskuxyp4awyr4whcx3nqq5yrr6vimzsxg5dy64
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
