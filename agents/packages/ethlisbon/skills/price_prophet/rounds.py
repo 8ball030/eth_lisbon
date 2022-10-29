@@ -182,21 +182,21 @@ class PriceProphetAbciApp(AbciApp[Event]):
     initial_states: Set[AppState] = {RequestDataRound}
     transition_function: AbciAppTransitionFunction = {
         RequestDataRound: {
-            Event.DONE: ValidateDataRound,
-            Event.ROUND_TIMEOUT: RequestDataRound,
-            Event.NO_MAJORITY: RequestDataRound
-        },
-        ValidateDataRound: {
-            Event.DONE: StoreDataRound,
-            Event.ROUND_TIMEOUT: RequestDataRound,
-            Event.NO_MAJORITY: RequestDataRound
-        },
-        StoreDataRound: {
             Event.DONE: AnnotateDataRound,
             Event.ROUND_TIMEOUT: RequestDataRound,
             Event.NO_MAJORITY: RequestDataRound
         },
         AnnotateDataRound: {
+            Event.DONE: StoreDataRound,
+            Event.ROUND_TIMEOUT: RequestDataRound,
+            Event.NO_MAJORITY: RequestDataRound
+        },
+        StoreDataRound: {
+            Event.DONE: ValidateDataRound,
+            Event.ROUND_TIMEOUT: RequestDataRound,
+            Event.NO_MAJORITY: RequestDataRound
+        },
+        ValidateDataRound: {
             Event.DONE: TrainModelRound,
             Event.ROUND_TIMEOUT: RequestDataRound,
             Event.NO_MAJORITY: RequestDataRound
