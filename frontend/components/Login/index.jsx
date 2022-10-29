@@ -16,7 +16,7 @@ import {
   setErrorMessage as setErrorMessageFn,
 } from 'store/setup/actions';
 import { DataContext } from 'common-util/context';
-// import { getContract } from 'common-util/Contracts';
+import { getContract } from 'common-util/Contracts';
 import { providerOptions } from './helpers';
 import { Container, DetailsContainer, WalletContainer } from './styles';
 
@@ -88,10 +88,12 @@ const Login = ({
       setChainId(currentChainId || null);
 
       /* --------------- Contract call --------------- */
-      // const contract = getContract(modalProvider, currentChainId);
-      // const response = await contract.methods
-      //   .claimableBalances(address[0])
-      //   .call();
+      const contract = getContract(modalProvider, currentChainId);
+      console.log(modalProvider, currentChainId, contract);
+      const response = await contract.methods
+        .owner()
+        .call();
+      console.log(response);
     } catch (error) {
       window.console.error(error);
     }

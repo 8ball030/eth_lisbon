@@ -1,2 +1,2 @@
-export * from './saleContract';
-export * from './contractGoerli';
+export * from './mainContract';
+export * from './goerliContract';
