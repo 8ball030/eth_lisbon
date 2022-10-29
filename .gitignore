@@ -29,3 +29,5 @@ coverage.txt
 coverage.xml
 htmlcov
 !.gitleaksignore
+
+contracts/.env
