@@ -24,6 +24,7 @@ from typing import Generator, List, Set, Type, cast, Optional, Any
 
 import requests
 import pandas as pd
+import ipfshttpclient
 
 from packages.ethlisbon.contracts.price_prediction.contract import PricePredictionContract
 from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
@@ -74,6 +75,7 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 
 SAFE_GAS = 0
 ETH_VALUE = 0
+DEFAULT_REGISTRY="/dns/registry.autonolas.tech/tcp/443/https"
 
 
 class PriceProphetBaseBehaviour(BaseBehaviour):
@@ -204,10 +206,16 @@ class StoreDataBehaviour(PriceProphetBaseBehaviour):
     # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
+        
+        breakpoint()
+        ipfs_tool = ipfshttpclient.Client(addr=DEFAULT_REGISTRY)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            res = ipfs_tool.add("data.csv", pin=True)
+            data_set = res.as_json()['Hash']
             sender = self.context.agent_address
             payload = StoreDataPayload(sender=sender, content=...)
+
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
