@@ -1,6 +1,11 @@
 # eth_lisbon
 Hackathon repository for ETH Lisbon 2022
 
+
+To install TA-lib, follow the instructions here:
+https://cloudstrata.io/install-ta-lib-on-ubuntu-server/
+
+
 <figure markdown>
 <div class="mermaid">
 stateDiagram-v2

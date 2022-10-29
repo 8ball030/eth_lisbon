@@ -24,6 +24,11 @@ from typing import Generator, List, Set, Type, cast
 import ccxt
 import pandas as pd
 
+try:
+    import talib
+except ImportError:
+    raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
+
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
