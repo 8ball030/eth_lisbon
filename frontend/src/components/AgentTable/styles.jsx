@@ -1,3 +1,6 @@
 import styled from 'styled-components';
 
-export const TableStyles = styled.div``;
+export const AgentTableContainer = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+`;

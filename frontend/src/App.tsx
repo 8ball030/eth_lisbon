@@ -1,6 +1,7 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import AgentTable from './components/AgentTable';
+import './App.css';
 
 export const Container = createGlobalStyle`
   body {
@@ -10,6 +11,7 @@ export const Container = createGlobalStyle`
       'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    padding: 1rem;
   }
 
   code {
