@@ -7,11 +7,12 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeibisvdon6o3mbmdsa3635aoactxwhljrux2tcltgmaarcjdbj6ziu
+  behaviours.py: bafybeiavbnj3mbpuxlubet23q2f24slfdokz6ojfhovroqgu7r2pyakcre
   composition.py: bafybeihkmbe6pbcjkwdufgtv3lbeyr45jb6wcsziuvl7szonnx4t2ztifq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeihtlrmy7rudbebbohztrajwcpl6bn2spch2ppxv25qrsttiidnnvm
   handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
+  ml_tools.py: bafybeia4uelusfwcdbaqzulb7zdu7knakxr7jzdiohfk5sz7rzkhncwldu
   models.py: bafybeifay5fmr6oean7ae3gkqmundf5y7arpxtysypl5udyalvcscsngu4
   payloads.py: bafybeidyvw4v3xivfblvcqxdlvp6yc4cqwrqurytgjkazwow3xi3mmjwk4
   rounds.py: bafybeic5gicuxipvy6bh4zqytktbw6eip5jvfskfxlr5awn26dgi534mdm
@@ -90,6 +91,7 @@ models:
         genesis_time: '2022-05-20T16:00:21.735122717Z'
         voting_power: '10'
       history_check_timeout: 1205
+      ipfs_registry: /dns/registry.autonolas.tech/tcp/443/https
       keeper_allowed_retries: 3
       keeper_timeout: 30.0
       market: BTC/USD
@@ -138,6 +140,10 @@ models:
     args: {}
     class_name: TendermintDialogues
 dependencies:
+  scikit-learn:
+    version: ==1.1.3
+  skforecast:
+    version: ==0.5.1
   ta-lib:
     version: ==0.4.25
 is_abstract: false
