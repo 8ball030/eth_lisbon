@@ -30,3 +30,19 @@ stateDiagram-v2
 </div>
 <figcaption>PriceProphetAbciApp</figcaption>
 </figure>
+
+
+Deployments;
+
+
+1. Safe contract
+
+0xd87bEe9DDD28773ac2EBEE70AE005F2DeB46B400
+
+2. Price Prediction Contract
+
+#TODO
+
+
+3. 
+
