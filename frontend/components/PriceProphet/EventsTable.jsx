@@ -7,7 +7,16 @@ const columns = [
     title: 'Events',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => text,
+    render: (text) => (
+      <a
+        href={`https://cronoscan.com/tx/${text}`}
+        target="_blank"
+        rel="noreferrer"
+        style={{ textDecoration: 'underline' }}
+      >
+        {text}
+      </a>
+    ),
   },
 ];
 
