@@ -32,6 +32,11 @@ try:
 except ImportError:
     raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
 
+from packages.ethlisbon.skills.price_prophet.composition import ComposedPriceProphetAbciApp
+from packages.valory.skills.registration_abci.behaviours import AgentRegistrationRoundBehaviour, \
+    RegistrationStartupBehaviour
+from packages.valory.skills.safe_deployment_abci.behaviours import SafeDeploymentRoundBehaviour
+from packages.valory.skills.transaction_settlement_abci.behaviours import TransactionSettlementRoundBehaviour
 from aea.common import JSONLike
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
@@ -330,4 +335,16 @@ class PriceProphetRoundBehaviour(AbstractRoundBehaviour):
         TransactionBehaviour,
         ValidateDataBehaviour,
         WeightSharingBehaviour
+    ]
+
+
+class ComposedPriceProphetRoundBehaviour(AbstractRoundBehaviour):
+    """This class contains the composed price prophet behaviour."""
+    initial_behaviour_cls = RegistrationStartupBehaviour
+    abci_app_cls = ComposedPriceProphetAbciApp
+    behaviours: Set[Type[BaseBehaviour]] = [
+        *AgentRegistrationRoundBehaviour.behaviours,
+        *SafeDeploymentRoundBehaviour.behaviours,
+        *TransactionSettlementRoundBehaviour.behaviours,
+        *PriceProphetRoundBehaviour.behaviours,
     ]

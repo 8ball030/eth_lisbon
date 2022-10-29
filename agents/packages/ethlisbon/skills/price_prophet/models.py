@@ -21,7 +21,7 @@
 
 from typing import Any
 
-from packages.valory.skills.abstract_round_abci.models import BaseParams
+from packages.ethlisbon.skills.price_prophet.composition import ComposedPriceProphetAbciApp
 from packages.valory.skills.abstract_round_abci.models import (
     BenchmarkTool as BaseBenchmarkTool,
 )
@@ -29,17 +29,22 @@ from packages.valory.skills.abstract_round_abci.models import Requests as BaseRe
 from packages.valory.skills.abstract_round_abci.models import (
     SharedState as BaseSharedState,
 )
-from packages.ethlisbon.skills.price_prophet.rounds import PriceProphetAbciApp
-
+from packages.valory.skills.transaction_settlement_abci.models import (
+    RandomnessApi as TransactionSettlementRandomness, TransactionParams,
+)
 
 class SharedState(BaseSharedState):
     """Keep the current shared state of the skill."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the state."""
-        super().__init__(*args, abci_app_cls=PriceProphetAbciApp, **kwargs)
+        super().__init__(*args, abci_app_cls=ComposedPriceProphetAbciApp, **kwargs)
 
 
-Params = BaseParams
+class Params(TransactionParams):
+    """A model to represent params for multiple abci apps."""
+
+
+RandomnessApi = TransactionSettlementRandomness
 Requests = BaseRequests
 BenchmarkTool = BaseBenchmarkTool

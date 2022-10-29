@@ -7,11 +7,12 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeibl5y2gwwv6gimkwkr5tu6alq5mdw3nza4zihb4dhzrcoo7ba6srq
+  behaviours.py: bafybeibisvdon6o3mbmdsa3635aoactxwhljrux2tcltgmaarcjdbj6ziu
+  composition.py: bafybeihkmbe6pbcjkwdufgtv3lbeyr45jb6wcsziuvl7szonnx4t2ztifq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeihtlrmy7rudbebbohztrajwcpl6bn2spch2ppxv25qrsttiidnnvm
   handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
-  models.py: bafybeihzggzu2ez6imu65uph2xyuzmfqnegx7kzlivfgszci5twh5bc7le
+  models.py: bafybeifay5fmr6oean7ae3gkqmundf5y7arpxtysypl5udyalvcscsngu4
   payloads.py: bafybeidyvw4v3xivfblvcqxdlvp6yc4cqwrqurytgjkazwow3xi3mmjwk4
   rounds.py: bafybeic5gicuxipvy6bh4zqytktbw6eip5jvfskfxlr5awn26dgi534mdm
   tests/__init__.py: bafybeigk3g6iau7if6tkd262pfwt35g472pkkeudc32x54fwgl4gbmrt6q
@@ -27,10 +28,13 @@ contracts: []
 protocols: []
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
+- valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
+- valory/safe_deployment_abci:0.1.0:bafybeibk7pesp44jtzhgegm2ylsijo5xa4gguaui3ef2ckt4hu2tvqamsq
+- valory/transaction_settlement_abci:0.1.0:bafybeiaqfxy3z2ee736n3hmrec4zrij3esk3b4pbln7ayealpobcg2qmti
 behaviours:
   main:
     args: {}
-    class_name: PriceProphetRoundBehaviour
+    class_name: ComposedPriceProphetRoundBehaviour
 handlers:
   abci:
     args: {}
@@ -113,6 +117,17 @@ models:
       tendermint_url: http://localhost:26657
       validate_timeout: 1205
     class_name: Params
+  randomness_api:
+    args:
+      api_id: cloudflare
+      headers: []
+      method: GET
+      parameters: []
+      response_key: null
+      response_type: dict
+      retries: 5
+      url: https://drand.cloudflare.com/public/latest
+    class_name: RandomnessApi
   requests:
     args: {}
     class_name: Requests

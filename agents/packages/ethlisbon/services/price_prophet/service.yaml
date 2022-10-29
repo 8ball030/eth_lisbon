@@ -6,7 +6,7 @@ aea_version: '>=1.0.0, <2.0.0'
 license: Apache-2.0
 fingerprint: {}
 fingerprint_ignore_patterns: []
-agent: ethlisbon/price_prophet:0.1.0:bafybeibpksy7ekldli55g7viaaacnh35rykrefsp47hvl2w7joiiwf7ivi
+agent: ethlisbon/price_prophet:0.1.0:bafybeiaph35wg3tuva3rdyvn4gancsnkgo6od4i37yi676aba46lr7eo5a
 number_of_agents: 4
 ---
 benchmark_persistence_params:
