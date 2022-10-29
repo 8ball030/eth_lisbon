@@ -1,4 +1,3 @@
 import styled from 'styled-components';
 
-export const AgentTableContainer = styled.div`
-`;
+export const AgentTableContainer = styled.div``;

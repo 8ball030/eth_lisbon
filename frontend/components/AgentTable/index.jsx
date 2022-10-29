@@ -3,7 +3,7 @@ import { Table, Tag, Typography } from 'antd';
 import { AgentTableContainer } from './styles';
 
 const { Title } = Typography;
-const baseURL = 'http://146.190.230.176:5000/';
+const baseURL = 'http://146.190.230.176:5000';
 
 const columns = [
   {

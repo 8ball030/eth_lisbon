@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import AgentTable from '../AgentTable';
 import LineChart from '../LineChart';
 
-const Component = () => (
+const Component = ({ ftxData }) => (
   <>
     <AgentTable />
-    <LineChart />
+    <LineChart ftxData={ftxData} />
   </>
 );
 
