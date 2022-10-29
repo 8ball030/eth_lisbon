@@ -1,0 +1,20 @@
+version: '3'
+services:
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    environment:
+      - IPFS_PROFILE=server
+      - IPFS_PATH=/ipfsdata
+    volumes:
+      - ./data/ipfs:/ipfsdata
+    ports:
+      - "0.0.0.0:4001:4001"
+      - "0.0.0.0:8080:8080"
+      - "0.0.0.0:8081:8081"
+      - "0.0.0.0:5001:5001"
+
+  frontend:
+    build: frontend
+    ports:
+      - "3000:3000"
+  
