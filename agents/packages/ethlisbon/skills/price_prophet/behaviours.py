@@ -19,15 +19,20 @@
 
 """This package contains round behaviours of PriceProphetAbciApp."""
 
+import json
+import logging
 from typing import Generator, List, Set, Type, cast
 
+import requests
 import pandas as pd
 
 try:
     import talib
+    from talib import abstract
 except ImportError:
     raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
 
+from aea.common import JSONLike
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -61,6 +66,29 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 )
 
 
+# __repr__ display them as dicts, all are in fact classes
+TA_INDICATORS = list(map(abstract.Function, talib.get_functions()))
+COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
+
+
+def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute TA indicators"""
+    # tested as: data = ccxt.kraken().fetch_ohlcv("BTC/USDT")
+    #            df = pd.DataFrame(data, columns=COLUMNS)
+    data = [df]
+    for f in TA_INDICATORS:
+        name = f._Function__name.decode('utf-8')
+        try:
+            transformed = f(df)
+            if len(transformed.shape) == 1:
+                transformed = transformed.to_frame(name=name)
+            data.append(transformed)
+        except Exception:
+            logging.warning(f"could not apply {name}")
+    # expected shape: time x feature = 720 x 180
+    return pd.concat(data, axis=1)
+
+
 class PriceProphetBaseBehaviour(BaseBehaviour):
     """Base behaviour for the common apps' skill."""
 
@@ -78,18 +106,17 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "annotate_data"
     matching_round: Type[AbstractRound] = AnnotateDataRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            most_voted: JSONLike = self.synchronized_data.db.get_strict(StoreDataRound.selection_key)
+            content = compute_indicators(pd.read_json(most_voted)).to_json()
             sender = self.context.agent_address
-            payload = AnnotateDataPayload(sender=sender, content=...)
+            payload = AnnotateDataPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -143,8 +170,6 @@ class PredictionBehaviour(PriceProphetBaseBehaviour):
 
         self.set_done()
 
-import requests
-import json
 
 class RequestDataBehaviour(PriceProphetBaseBehaviour):
     """RequestDataBehaviour"""
@@ -159,18 +184,13 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
-        
 
         self.context.logger.info(f"Retrieving data for {self.market}")
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-
-            columns = ["timestamp", "open", "hi", "low", "close", "volume"]
             result = requests.get(self.endpoint_url)
             data: List[List[float]] = json.loads(result.content)["result"]
-            df = pd.DataFrame(data, columns=columns)
-            content = df.to_json()
-
+            content = pd.DataFrame(data, columns=COLUMNS).to_json()
+            sender = self.context.agent_address
             payload = RequestDataPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
