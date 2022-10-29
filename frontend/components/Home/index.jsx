@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
+import dynamic from 'next/dynamic';
 import AgentTable from '../AgentTable';
-import LineChart from '../LineChart';
+
+const ChartComponent = dynamic(() => import('../LineChart'), { ssr: false });
 
 const Component = ({ ftxData }) => (
   <>
     <AgentTable />
-    <LineChart ftxData={ftxData} />
+    <ChartComponent ftxData={ftxData} />
   </>
 );
 
