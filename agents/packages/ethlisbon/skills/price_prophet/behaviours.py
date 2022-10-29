@@ -21,14 +21,13 @@
 
 from typing import Generator, List, Set, Type, cast
 
-import ccxt
 import pandas as pd
 
-try:
-    import talib
-except ImportError:
-    raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
-
+from packages.ethlisbon.skills.price_prophet.composition import ComposedPriceProphetAbciApp
+from packages.valory.skills.registration_abci.behaviours import AgentRegistrationRoundBehaviour, \
+    RegistrationStartupBehaviour
+from packages.valory.skills.safe_deployment_abci.behaviours import SafeDeploymentRoundBehaviour
+from packages.valory.skills.transaction_settlement_abci.behaviours import TransactionSettlementRoundBehaviour
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
     AbstractRoundBehaviour,
@@ -157,7 +156,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             sender = self.context.agent_address
             columns = ["timestamp", "open", "hi", "low", "close", "volume"]
-            data: List[List[float]] = ccxt.kraken().fetch_ohlcv("BTC/USDT")
+            data: List[List[float]] = {}
             df = pd.DataFrame(data, columns=columns)
             content = df.to_json()
 
@@ -300,4 +299,16 @@ class PriceProphetRoundBehaviour(AbstractRoundBehaviour):
         TransactionBehaviour,
         ValidateDataBehaviour,
         WeightSharingBehaviour
+    ]
+
+
+class ComposedPriceProphetRoundBehaviour(AbstractRoundBehaviour):
+    """This class contains the composed price prophet behaviour."""
+    initial_behaviour_cls = RegistrationStartupBehaviour
+    abci_app_cls = ComposedPriceProphetAbciApp
+    behaviours: Set[Type[BaseBehaviour]] = [
+        *AgentRegistrationRoundBehaviour.behaviours,
+        *SafeDeploymentRoundBehaviour.behaviours,
+        *TransactionSettlementRoundBehaviour.behaviours,
+        *PriceProphetRoundBehaviour.behaviours,
     ]
