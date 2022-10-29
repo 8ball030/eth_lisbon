@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Table, Tag, Typography } from 'antd';
-import axios from 'axios';
 import { AgentTableContainer } from './styles';
 
 const { Title } = Typography;
-const baseURL = 'http://146.190.230.176:5000/peers/1';
+const baseURL = 'http://146.190.230.176:5000/';
 
 const columns = [
   {
@@ -19,39 +18,20 @@ const columns = [
   //   key: 'address',
   // },
   {
-    title: 'Tags',
+    title: 'Agent State',
     key: 'agent_state',
     dataIndex: 'agent_state',
     render: (aState) => {
-      console.log(aState)
       let color = 'green';
       if (aState === 'PriceEstimationRound') {
         color = 'volcano';
       }
       return (
         <Tag color={color} key={aState}>
-          {(aState||'').toUpperCase()}
+          {(aState || '').toUpperCase()}
         </Tag>
       );
     },
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    agent_address: '0xaddress',
-    agent_state: 'PriceEstimationRound',
-  },
-  {
-    key: '2',
-    agent_address: '0xaddress',
-    agent_state: 'PriceEstimationRound',
-  },
-  {
-    key: '3',
-    agent_address: '0xaddress',
-    agent_state: 'Abc',
   },
 ];
 
@@ -59,27 +39,28 @@ const AgentTable = () => {
   const [agentData, setAgentData] = useState(null);
 
   React.useEffect(() => {
-    axios
-      .get(baseURL, {
-        withCredentials: false,
-      })
-      .then((response) => {
-        setAgentData(response);
-      })
-      .catch((e) => {
-        console.error('Some error occured!', e);
-
-        // TODO: remove once cors is fixed
-        setAgentData(data);
-      });
+    const apiCall = async () => {
+      try {
+        const response = await fetch(`${baseURL}/peers/1`);
+        const data = await response.json();
+        setAgentData([data]);
+      } catch (error) {
+        console.error('Some error occured!', error);
+      }
+    };
+    apiCall();
   }, []);
-
-  console.log(agentData);
 
   return (
     <AgentTableContainer>
       <Title level={2}>Agent Table</Title>
-      <Table columns={columns} dataSource={data} bordered pagination={false} />
+      <Table
+        columns={columns}
+        dataSource={agentData}
+        bordered
+        pagination={false}
+        rowKey="agent_address"
+      />
     </AgentTableContainer>
   );
 };
