@@ -79,8 +79,8 @@ class AnnotateDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "annotate_data"
     allowed_tx_type: Optional[TransactionType] = AnnotateDataPayload.transaction_type
     payload_attribute: str = "annotate_data"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_annotation"
+    selection_key: str = "most_voted_annotation"
 
 
 class ModelValidationRound(CollectSameUntilThresholdRound, BaseRoundMixin):
@@ -89,8 +89,8 @@ class ModelValidationRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "model_validation"
     allowed_tx_type: Optional[TransactionType] = ModelValidationPayload.transaction_type
     payload_attribute: str = "model_validation"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_model"
+    selection_key: str = "most_voted_model"
 
 
 class PredictionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
@@ -99,8 +99,8 @@ class PredictionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "prediction"
     allowed_tx_type: Optional[TransactionType] = PredictionPayload.transaction_type
     payload_attribute: str = "prediction"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_prediction"
+    selection_key: str = "most_voted_prediction"
 
 
 class RequestDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
@@ -109,8 +109,8 @@ class RequestDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "request_data"
     allowed_tx_type: Optional[TransactionType] = RequestDataPayload.transaction_type
     payload_attribute: str = "request_data"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_requested_data"
+    selection_key: str = "most_voted_requested_data"
 
 
 class StoreDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
@@ -119,8 +119,8 @@ class StoreDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "store_data"
     allowed_tx_type: Optional[TransactionType] = StoreDataPayload.transaction_type
     payload_attribute: str = "store_data"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_data_package"
+    selection_key: str = "most_voted_data_package"
 
 
 class TrainModelRound(CollectSameUntilThresholdRound, BaseRoundMixin):
@@ -129,8 +129,8 @@ class TrainModelRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "train_model"
     allowed_tx_type: Optional[TransactionType] = TrainModelPayload.transaction_type
     payload_attribute: str = "train_model"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_trained_model"
+    selection_key: str = "most_voted_trained_model"
 
 
 class TransactionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
@@ -139,8 +139,8 @@ class TransactionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "transaction"
     allowed_tx_type: Optional[TransactionType] = TransactionPayload.transaction_type
     payload_attribute: str = "transaction"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_transaction"
+    selection_key: str = "most_voted_transaction"
 
 
 class ValidateDataRound(VotingRound, BaseRoundMixin):
@@ -151,7 +151,7 @@ class ValidateDataRound(VotingRound, BaseRoundMixin):
     payload_attribute: str = "validate_data"
     negative_event = Event.NEGATIVE
     none_event = Event.NONE
-    collection_key: str  # TODO
+    collection_key: str = "participant_to_votes"
 
     def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
         """Process the end of the block."""
@@ -164,8 +164,8 @@ class WeightSharingRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "weight_sharing"
     allowed_tx_type: Optional[TransactionType] = WeightSharingPayload.transaction_type
     payload_attribute: str = "weight_sharing"
-    collection_key: str  # TODO
-    selection_key: str  # TODO
+    collection_key: str = "participant_to_weights"
+    selection_key: str = "most_voted_weights"
 
 
 class FinishedTransactionRound(DegenerateRound, BaseRoundMixin):
