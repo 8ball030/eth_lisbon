@@ -1,6 +1,11 @@
 /frontend/node_modules
+
 /agents/.idea/
+
+/agents/price_prophet
+
 /agents/packages/open_aea/
+/agents/packages/fetchai
 /agents/packages/valory/
 
 
