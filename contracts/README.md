@@ -1,16 +1,20 @@
 # Price Prophet (Price Prediction Contract)
 
 PricePrediction.sol deployed to
-> 0x6D6754DD2DFc1EcA7F2aD982d48bEbAAB44E7F73
+> 0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db
 
 
 # Mainnet Deployment;
 
+Nothing to compile
+Successfully submitted source code for contract
+contracts/PricePrediction.sol:PricePrediction at 0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db
+for verification on the block explorer. Waiting for verification result...
 
-https://cronoscan.com/address/0x72dA4693A52e1e4aE8D1a00fdFb9Df5E39baa544
+Successfully verified contract PricePrediction on Etherscan.
+https://cronoscan.com/address/0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db#code
 
-(deployment tx)[
-https://cronoscan.com/tx/0x344d7c5c1203f5b19edf52f316a6ae40f6aac86bf837900578daaeb731d7ae59]
+
 ---
 
 Try running some of the following tasks:
@@ -28,9 +32,15 @@ npx hardhat compile
 ```
 
 # deploy
+```
+ npx hardhat run scripts/deploy.js --network cronos
 
+```
+# verify
+```
+npx hardhat verify --network cronos 0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db
 
-
+```
 # run 
 ```shell
 npx hardhat help
