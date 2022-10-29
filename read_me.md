@@ -7,6 +7,9 @@
 [![codecov](https://codecov.io/gh/8ball030/open_dev/branch/main/graphs/badge.svg)](https://codecov.io/github/8ball030/open_dev)
 
 
+
+
+
 Install Dependencies.
 
 (Poetry) Is used to managed the dependencies. (https://python-poetry.org/docs/#installation)
@@ -24,6 +27,14 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 ```bash
 make install
 
+```
+
+# Generate keys
+
+```
+cd agents
+pipenv shell
+python scripts/generate_keys.py
 ```
 
 
@@ -53,11 +64,14 @@ cd agents
 pipenv shell
 
 # push the service
-autonomy push
+autonomy push-all
 autonomy fetch $AUTHOR/$SERVICE --local --service
-
 cd $SERVICE
 
+autonomy build-image
+autonomy deploy build ../generated_keys.json --force --password  password  --aev  \ 
+    && cd abci_build \
+    && docker-compose up
 
 
 ```
