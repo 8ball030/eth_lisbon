@@ -73,6 +73,8 @@ COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
 
 def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
     """Compute TA indicators"""
+    # tested as: data = ccxt.kraken().fetch_ohlcv("BTC/USDT")
+    #            df = pd.DataFrame(data, columns=COLUMNS)
     data = [df]
     for f in TA_INDICATORS:
         name = f._Function__name.decode('utf-8')
@@ -83,6 +85,7 @@ def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
             data.append(transformed)
         except Exception:
             logging.warning(f"could not apply {name}")
+    # expected shape: time x feature = 720 x 180
     return pd.concat(data, axis=1)
 
 
