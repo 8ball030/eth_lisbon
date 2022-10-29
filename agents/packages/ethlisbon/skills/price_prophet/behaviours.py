@@ -21,16 +21,11 @@
 
 import json
 import logging
-from typing import Generator, List, Set, Type, cast
+from typing import Generator, List, Set, Type, Any, cast
 
 import requests
 import pandas as pd
 
-try:
-    import talib
-    from talib import abstract
-except ImportError:
-    raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
 
 from aea.common import JSONLike
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
@@ -39,6 +34,18 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
     BaseBehaviour,
 )
 
+from packages.ethlisbon.skills.price_prophet.ml_tools import (
+    COLUMNS,
+    Y_TARGET,
+    STEPS_INTO_THE_FUTURE,
+    LAGS_GRID,
+    PARAM_GRID,
+    impute,
+    compute_indicators,
+    split_train_test,
+    forecaster,
+    grid_search_forecaster,
+)
 from packages.ethlisbon.skills.price_prophet.models import Params
 from packages.ethlisbon.skills.price_prophet.rounds import (
     SynchronizedData,
@@ -66,29 +73,6 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 )
 
 
-# __repr__ display them as dicts, all are in fact classes
-TA_INDICATORS = list(map(abstract.Function, talib.get_functions()))
-COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
-
-
-def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
-    """Compute TA indicators"""
-    # tested as: data = ccxt.kraken().fetch_ohlcv("BTC/USDT")
-    #            df = pd.DataFrame(data, columns=COLUMNS)
-    data = [df]
-    for f in TA_INDICATORS:
-        name = f._Function__name.decode('utf-8')
-        try:
-            transformed = f(df)
-            if len(transformed.shape) == 1:
-                transformed = transformed.to_frame(name=name)
-            data.append(transformed)
-        except Exception:
-            logging.warning(f"could not apply {name}")
-    # expected shape: time x feature = 720 x 180
-    return pd.concat(data, axis=1)
-
-
 class PriceProphetBaseBehaviour(BaseBehaviour):
     """Base behaviour for the common apps' skill."""
 
@@ -102,6 +86,10 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         """Return the params."""
         return cast(Params, super().params)
 
+    def get_strict(self, key: str) -> Any:
+        """Get strict from SynchronizedData"""
+        return self.synchronized_data.db.get_strict(key)
+
 
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
@@ -113,7 +101,7 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            most_voted: JSONLike = self.synchronized_data.db.get_strict(StoreDataRound.selection_key)
+            most_voted: JSONLike = self.get_strict(StoreDataRound.selection_key)
             content = compute_indicators(pd.read_json(most_voted)).to_json()
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=content)
@@ -226,24 +214,52 @@ class StoreDataBehaviour(PriceProphetBaseBehaviour):
 class TrainModelBehaviour(PriceProphetBaseBehaviour):
     """TrainModelBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "train_model"
     matching_round: Type[AbstractRound] = TrainModelRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
+        # TODO: get randomness from randomness beacon
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-            payload = TrainModelPayload(sender=sender, content=...)
+            random_state = self.synchronized_data.period_count
+            most_voted: JSONLike = self.get_strict(AnnotateDataRound.selection_key)
+            results_grid = self.train_model(pd.read_json(most_voted), random_state)
+            content, sender = results_grid.to_json(), self.context.agent_address
+            payload = TrainModelPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
             yield from self.wait_until_round_end()
 
         self.set_done()
+
+    def train_model(self, x, random_state):
+        """Train model"""
+
+        # currently we interpolate and discard features with NaN
+        x_imputed = impute(x)
+        x_train, x_test = split_train_test(x_imputed)
+        forecaster.regressor.random_state = random_state
+
+        # this runs the grid search
+        # currently still univariate (without exogenous variables)
+        results_grid = grid_search_forecaster(
+            forecaster=forecaster,
+            y=x_train[Y_TARGET],
+            param_grid=PARAM_GRID,
+            lags_grid=LAGS_GRID,
+            steps=STEPS_INTO_THE_FUTURE,
+            refit=True,  # set False to speed up
+            metric="mean_squared_error",
+            initial_train_size=x_train.shape[0] // 2,
+            fixed_train_size=False,
+            return_best=True,
+            verbose=False,
+        )
+
+        # ['lags', 'params', 'mean_squared_error', 'max_depth', 'n_estimators']
+        return results_grid
 
 
 class TransactionBehaviour(PriceProphetBaseBehaviour):
