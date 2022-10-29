@@ -1,0 +1,39 @@
+name: price_prophet
+author: ethlisbon
+version: 0.1.0
+description: A simple demonstration of a simple ABCI application
+aea_version: '>=1.0.0, <2.0.0'
+license: Apache-2.0
+fingerprint: {}
+fingerprint_ignore_patterns: []
+agent: ethlisbon/price_prophet:0.1.0:bafybeidvdbykujahmvti3c5esx7qxhdpwhqjt7dcre7hirdbazz7pspr7q
+number_of_agents: 4
+---
+benchmark_persistence_params:
+  args: &id001
+    log_dir: /benchmarks
+public_id: price_prophet/hello_world_abci:0.1.0
+type: skill
+models:
+  0:
+  - benchmark_tool:
+      args: *id001
+  1:
+  - benchmark_tool:
+      args: *id001
+  2:
+  - benchmark_tool:
+      args: *id001
+  3:
+  - benchmark_tool:
+      args: *id001
+---
+public_id: valory/ledger:0.19.0
+type: connection
+config:
+  ledger_apis:
+    ethereum:
+      address: ${CHAIN_RPC:str:http://host.docker.internal:8545}
+      chain_id: ${CHAIN_ID:int:31337}
+      poa_chain: false
+      default_gas_price_strategy: eip1559
