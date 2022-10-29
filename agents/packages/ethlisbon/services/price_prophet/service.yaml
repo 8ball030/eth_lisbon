@@ -6,26 +6,30 @@ aea_version: '>=1.0.0, <2.0.0'
 license: Apache-2.0
 fingerprint: {}
 fingerprint_ignore_patterns: []
-agent: ethlisbon/price_prophet:0.1.0:bafybeidnqu5qojplf2wnnggmltzsblw2wyqozkhuf2vjil7fmvzarz4jua
+agent: ethlisbon/price_prophet:0.1.0:bafybeibhqpw2mwrcjxbbhfwwsse3nrojer45kjbyfnmksd67pqgyhqpcze
 number_of_agents: 4
 ---
-benchmark_persistence_params:
+params:
   args: &id001
-    log_dir: /benchmarks
-public_id: price_prophet/hello_world_abci:0.1.0
+    setup:
+      safe_contract_address:
+      - '0xd87bEe9DDD28773ac2EBEE70AE005F2DeB46B400'
+      oracle_contract_address:
+      - '0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db'
+public_id: ethlisbon/price_prophet:0.1.0
 type: skill
 models:
   0:
-  - benchmark_tool:
+  - params:
       args: *id001
   1:
-  - benchmark_tool:
+  - params:
       args: *id001
   2:
-  - benchmark_tool:
+  - params:
       args: *id001
   3:
-  - benchmark_tool:
+  - params:
       args: *id001
 ---
 public_id: valory/ledger:0.19.0
