@@ -20,7 +20,7 @@ contract PricePrediction is Ownable {
         uint lastPrice;
         uint price;
     }
-    PriceDataStruct private priceData;
+    PriceDataStruct public priceData;
 
     //Events
     event LogPriceDataUpdated(address sender, uint rateOfChange, uint price);
