@@ -1,3 +1,25 @@
 /agents/.idea/
 /agents/packages/open_aea/
 /agents/packages/valory/
+
+
+# hidden files
+.*
+!/.github
+!/.gitignore
+!/.gitmodules
+!/.pylintrc
+
+# python
+__pycache__
+Pipfile.lock
+*.egg-info
+
+# logs
+*.log
+
+# test coverage
+coverage.txt
+coverage.xml
+htmlcov
+!.gitleaksignore
