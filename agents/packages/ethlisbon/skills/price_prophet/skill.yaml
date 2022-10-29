@@ -94,6 +94,7 @@ models:
         genesis_time: '2022-05-20T16:00:21.735122717Z'
         voting_power: '10'
       history_check_timeout: 1205
+      ipfs_registry: /dns/registry.autonolas.tech/tcp/443/https
       keeper_allowed_retries: 3
       keeper_timeout: 30.0
       market: BTC/USD
@@ -143,6 +144,10 @@ models:
     args: {}
     class_name: TendermintDialogues
 dependencies:
+  scikit-learn:
+    version: ==1.1.3
+  skforecast:
+    version: ==0.5.1
   ta-lib:
     version: ==0.4.25
 is_abstract: false
