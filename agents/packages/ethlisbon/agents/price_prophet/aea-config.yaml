@@ -13,8 +13,8 @@ connections:
 - valory/ledger:0.19.0:bafybeihmz5us4ntmzvgikpkx4tththrl7zvou4uiebvletdeliidiuhi6m
 - valory/p2p_libp2p_client:0.1.0:bafybeihf35zfr35qsvfte4vbi7njvuzfx4httysw7owmlux53gvxh2or54
 contracts:
-- valory/gnosis_safe:0.1.0:bafybeihjqtlmvgxre2zmyuyddzglxh6irnxk6ha7q4vmyiyhfskoqffpfe
-- valory/gnosis_safe_proxy_factory:0.1.0:bafybeidde42fncwdgkwcuztot2hx7s7qkfusmujplvvwljeylyavrgomcy
+- valory/gnosis_safe:0.1.0:bafybeieh43hzlpsxcbaw76jjctltpyhqaxcjgpv5s7x4j5avqijh52md24
+- valory/gnosis_safe_proxy_factory:0.1.0:bafybeifjehgxbajs2gszgo3xtkecutuuyr2sde4y7gqssttcqkdmkd4rvm
 - valory/service_registry:0.1.0:bafybeigf6dcpf3dfjf4ymghvmpmhq23cptt7cwxowoypvmyvaadsivvvou
 protocols:
 - fetchai/default:1.0.0:bafybeigwlziluwyzq66gfc2r4ln4j6xj5ovhijk4btddjkv6ej73ilhjai
@@ -26,12 +26,12 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeih7rhi5zvfvwakx5ifgxsz2cfipeecsh7bm3gnudjxtvhrygpcftq
 - valory/tendermint:0.1.0:bafybeihcnjhovvyyfbkuw5sjyfx2lfd4soeocfqzxz54g67333m6nk5gxq
 skills:
-- ethlisbon/price_prophet:0.1.0:bafybeiee5fgbhfmoeqrnqxhfcy6qbscpu6aqnwszjofp2l3ynhvs4bksw4
+- ethlisbon/price_prophet:0.1.0:bafybeif27b74mbmmpxyavxf52wcvemlp43kef7qwbooiel5ueqymqdb2ze
 - valory/abstract_abci:0.1.0:bafybeiagrbn76jal52v2egtuwelcam3e2huzc6pwjtux2dh5hktxn7em3y
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
-- valory/safe_deployment_abci:0.1.0:bafybeibk7pesp44jtzhgegm2ylsijo5xa4gguaui3ef2ckt4hu2tvqamsq
-- valory/transaction_settlement_abci:0.1.0:bafybeiaqfxy3z2ee736n3hmrec4zrij3esk3b4pbln7ayealpobcg2qmti
+- valory/safe_deployment_abci:0.1.0:bafybeidmp6s7okvn6ucbyk74f7ldyaniglv27bnfrht7mynaosqtwl5dji
+- valory/transaction_settlement_abci:0.1.0:bafybeidfko3dboias2tupaehnftzbg4f7jui5753pc7tl2o5oex37l6dre
 default_ledger: ethereum
 required_ledgers:
 - ethereum
