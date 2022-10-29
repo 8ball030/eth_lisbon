@@ -54,7 +54,7 @@ N_BACKTESTING = STEPS_INTO_THE_FUTURE * 3
 DEFAULT_LAGS = 5
 
 # hyperparameter optimization
-LAGS_GRID = [5, 10, 20]
+LAGS_GRID = [5, 10]
 PARAM_GRID = dict(
     n_estimators=[100, 500],
 )
@@ -98,20 +98,20 @@ def impute(x: pd.DataFrame) -> pd.DataFrame:
     x = x.replace([np.inf, -np.inf], np.nan)
 
     number_of_nans = x.isna().sum().sum()
-    logging.error(f"NaN fraction: {number_of_nans / total_data_points}")
+    logging.info(f"NaN fraction: {number_of_nans / total_data_points}")
 
     # time series interpolation: linear, time, splines, etc.
     datetime_index = x["timestamp"].values.astype(dtype='datetime64[ms]')
     x = x.set_index(datetime_index)
     x = x.interpolate(method="time")
-    logging.error(f"NaN fraction: {number_of_nans / total_data_points}")
+    logging.info(f"NaN fraction: {number_of_nans / total_data_points}")
 
     # here we could impute; e.g. mean, median.
 
     # drop remaining NaNs
     x = x.dropna(axis=1)
     remaining_ratio = int.__mul__(*x.shape) / total_data_points
-    logging.error(f"Remaining data: {shape_in} -> {x.shape} ({remaining_ratio})")
+    logging.info(f"Remaining data: {shape_in} -> {x.shape} ({remaining_ratio})")
     return x.reset_index(drop=True)
 
 
@@ -120,6 +120,34 @@ def split_train_test(x: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     x_train, x_test = x[:-STEPS_INTO_THE_FUTURE], x[-STEPS_INTO_THE_FUTURE:]
     return x_train, x_test
+
+
+def train_model(x: pd.DataFrame, random_state: int):
+    """Train model"""
+
+    # currently we interpolate and discard features with NaN
+    x_imputed = impute(x)
+    x_train, x_test = split_train_test(x_imputed)
+    forecaster.regressor.random_state = random_state
+
+    # this runs the grid search
+    # currently still univariate (without exogenous variables)
+    results_grid = grid_search_forecaster(
+        forecaster=forecaster,
+        y=x_train[Y_TARGET],
+        param_grid=PARAM_GRID,
+        lags_grid=[10, 20],
+        steps=STEPS_INTO_THE_FUTURE,
+        refit=True,  # set False to speed up
+        metric="mean_squared_error",
+        initial_train_size=x_train.shape[0] // 2,
+        fixed_train_size=False,
+        return_best=True,
+        verbose=False,
+    )
+
+    # ['lags', 'params', 'mean_squared_error', 'max_depth', 'n_estimators']
+    return results_grid
 
 
 def test_dev():
