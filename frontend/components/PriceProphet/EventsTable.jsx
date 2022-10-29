@@ -5,8 +5,8 @@ import { DataContext } from 'common-util/context';
 const columns = [
   {
     title: 'Events',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'events',
+    key: 'events',
     render: (text) => (
       <a
         href={`https://cronoscan.com/tx/${text}`}
@@ -24,7 +24,7 @@ const EventsTable = () => {
   const { eventsData } = useContext(DataContext);
   const data = Object.keys(eventsData)
     .filter((e) => e.match(/^0x([A-Fa-f0-9]{64})$/))
-    .map((e) => ({ name: e, key: e }));
+    .map((e) => ({ events: e, key: e }));
 
   return (
     <Table
@@ -32,7 +32,7 @@ const EventsTable = () => {
       dataSource={data}
       bordered
       pagination={false}
-      rowKey="agent_address"
+      rowKey="events"
     />
   );
 };

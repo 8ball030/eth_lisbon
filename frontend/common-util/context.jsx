@@ -7,6 +7,7 @@ export const DataProvider = ({ children }) => {
   const [provider, setProvider] = useState(null);
   const [web3Provider, setWeb3Provider] = useState(null);
   const [predictedData, setPredictedData] = useState(null);
+  const [lastPredictedPrice, setLastPredictedPrice] = useState(null);
   const [eventsData, setEventsData] = useState({});
 
   return (
@@ -21,6 +22,8 @@ export const DataProvider = ({ children }) => {
           setPredictedData,
           eventsData,
           setEventsData,
+          lastPredictedPrice,
+          setLastPredictedPrice,
         }}
       >
         {children}

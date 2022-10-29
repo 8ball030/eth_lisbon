@@ -5,12 +5,14 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themesAnimated from '@amcharts/amcharts5/themes/Animated';
 import { COLOR } from 'util/theme';
 
+const getTimeValue = (e) => new Date(e.time).getTime();
+
 class Chart extends Component {
   componentDidMount() {
     const { ftxData } = this.props;
     const data = (ftxData || []).map((e) => ({
       ...e,
-      newTime: new Date(e.time).getTime(),
+      newTime: getTimeValue(e),
     }));
     const root = am5.Root.new('chartdiv');
     root.setThemes([am5themesAnimated.new(root)]);
@@ -88,42 +90,6 @@ class Chart extends Component {
     // https://www.amcharts.com/docs/v5/concepts/animations/
     series.appear(1000);
     chart.appear(1000, 100);
-
-    // console.log(data);
-    // ----------------
-    // function addRanges() {
-    //   const rangeDataItem = xAxis.makeDataItem({
-    //     category: new Date(1667007240000).getTime(),
-    //     endCategory: new Date(1667009640000).getTime(),
-    //   });
-
-    //   xAxis.createAxisRange(rangeDataItem);
-
-    //   rangeDataItem.get('grid').setAll({
-    //     stroke: am5.color(0x00ff33),
-    //     strokeOpacity: 0.5,
-    //     strokeDasharray: [3],
-    //   });
-
-    //   rangeDataItem.get('axisFill').setAll({
-    //     fill: am5.color(0x00ff33),
-    //     fillOpacity: 0.1,
-    //     visible: true,
-    //   });
-
-    //   rangeDataItem.get('label').setAll({
-    //     inside: true,
-    //     text: 'Fines for speeding increased',
-    //     rotation: 90,
-    //     centerX: am5.p100,
-    //     centerY: am5.p100,
-    //     location: 0,
-    //     paddingBottom: 10,
-    //     paddingRight: 15,
-    //   });
-    // }
-
-    // addRanges();
   }
 
   componentWillUnmount() {

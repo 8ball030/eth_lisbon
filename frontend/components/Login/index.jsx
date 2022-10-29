@@ -8,7 +8,7 @@ import get from 'lodash/get';
 import isNil from 'lodash/isNil';
 import { CHAIN_ID } from 'util/constants';
 import { getBalance } from 'common-util/functions';
-import { Button } from 'antd';
+import { Button } from 'antd/lib';
 import {
   setUserAccount as setUserAccountFn,
   setUserBalance as setUserBalanceFn,
@@ -48,8 +48,9 @@ const Login = ({
     web3Provider,
     setProvider,
     setWeb3Provider,
-    setPredictedData,
     setEventsData,
+    setPredictedData,
+    setLastPredictedPrice,
   } = useContext(DataContext);
 
   const setBalance = async (accountPassed) => {
@@ -91,9 +92,16 @@ const Login = ({
 
       /* --------------- Contract call --------------- */
       const contract = getContract(modalProvider, currentChainId);
-      const response = await contract.methods.getPriceData().call();
-      setPredictedData(response);
       setEventsData(contract.events);
+
+      const predictedPrc = await contract.methods.getPriceData().call();
+      setPredictedData(predictedPrc);
+
+      const lastPredictedPrc = await contract.methods.priceData().call();
+      setLastPredictedPrice(lastPredictedPrc);
+
+      // console.log(contract);
+      // console.log(response);
     } catch (error) {
       window.console.error(error);
     }
