@@ -21,7 +21,6 @@
 
 from typing import Generator, List, Set, Type, cast
 
-import ccxt
 import pandas as pd
 
 try:
@@ -144,6 +143,8 @@ class PredictionBehaviour(PriceProphetBaseBehaviour):
 
         self.set_done()
 
+import requests
+import json
 
 class RequestDataBehaviour(PriceProphetBaseBehaviour):
     """RequestDataBehaviour"""
@@ -151,13 +152,22 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
     behaviour_id: str = "request_data"
     matching_round: Type[AbstractRound] = RequestDataRound
 
+    # TODO parameterise the endpoint
+    resolution = 60
+    market = "BTC/USD"
+    endpoint_url = f"https://ftx.com/api/markets/{market}/candles?resolution={60}"
+
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
+        
 
+        self.context.logger.info(f"Retrieving data for {self.market}")
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             sender = self.context.agent_address
+
             columns = ["timestamp", "open", "hi", "low", "close", "volume"]
-            data: List[List[float]] = ccxt.kraken().fetch_ohlcv("BTC/USDT")
+            result = requests.get(self.endpoint_url)
+            data: List[List[float]] = json.loads(result.content)["result"]
             df = pd.DataFrame(data, columns=columns)
             content = df.to_json()
 

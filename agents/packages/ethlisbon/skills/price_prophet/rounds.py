@@ -23,6 +23,7 @@ from enum import Enum
 from typing import List, Optional, Set, Tuple
 
 from packages.valory.skills.abstract_round_abci.base import (
+    AbstractRound,
     AbciApp,
     AbciAppTransitionFunction,
     CollectSameUntilThresholdRound,
@@ -33,7 +34,7 @@ from packages.valory.skills.abstract_round_abci.base import (
     EventToTimeout,
     TransactionType
 )
-
+AbstractRound = AbstractRound
 from packages.ethlisbon.skills.price_prophet.payloads import (
     AnnotateDataPayload,
     ModelValidationPayload,

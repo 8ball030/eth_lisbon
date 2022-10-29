@@ -7,13 +7,13 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeib5slrlulhbqgo6lpj7efpcijgb6qrzdepeugds7a4rxagf5srvh4
+  behaviours.py: bafybeibl5y2gwwv6gimkwkr5tu6alq5mdw3nza4zihb4dhzrcoo7ba6srq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeihtlrmy7rudbebbohztrajwcpl6bn2spch2ppxv25qrsttiidnnvm
   handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
   models.py: bafybeihzggzu2ez6imu65uph2xyuzmfqnegx7kzlivfgszci5twh5bc7le
   payloads.py: bafybeidyvw4v3xivfblvcqxdlvp6yc4cqwrqurytgjkazwow3xi3mmjwk4
-  rounds.py: bafybeihxylgecqnp2tpa7jnxx6z27wn5c5kbprufto2vro6pqhqmzi2bge
+  rounds.py: bafybeic5gicuxipvy6bh4zqytktbw6eip5jvfskfxlr5awn26dgi534mdm
   tests/__init__.py: bafybeigk3g6iau7if6tkd262pfwt35g472pkkeudc32x54fwgl4gbmrt6q
   tests/test_behaviours.py: bafybeiatyqrwb4cxd3pwyelpnyxmg3nvlacozbws52pqicodb6hiyuxnui
   tests/test_dialogues.py: bafybeihyoc6l6wazvo4uxzhfyxkd5lyuiiamyix5mhjx72glew3ylp24dy
@@ -125,5 +125,7 @@ models:
   tendermint_dialogues:
     args: {}
     class_name: TendermintDialogues
-dependencies: {}
+dependencies:
+  ta-lib:
+    version: ==0.4.25
 is_abstract: false

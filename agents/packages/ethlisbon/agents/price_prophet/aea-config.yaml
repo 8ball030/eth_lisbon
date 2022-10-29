@@ -24,7 +24,7 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeih7rhi5zvfvwakx5ifgxsz2cfipeecsh7bm3gnudjxtvhrygpcftq
 - valory/tendermint:0.1.0:bafybeihcnjhovvyyfbkuw5sjyfx2lfd4soeocfqzxz54g67333m6nk5gxq
 skills:
-- ethlisbon/price_prophet:0.1.0:bafybeicmfxtuzlbmkvd5mtg4plkp5odyisngr35n7ivr5n3npvsfuuebk4
+- ethlisbon/price_prophet:0.1.0:bafybeig6e4fkzeo2eudsathu4ffnil6of4vl6xbrywminj42w5jffrapfe
 - valory/abstract_abci:0.1.0:bafybeiagrbn76jal52v2egtuwelcam3e2huzc6pwjtux2dh5hktxn7em3y
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 default_ledger: ethereum
@@ -86,7 +86,7 @@ config:
   target_skill_id: ethlisbon/price_prophet:0.1.0
   host: ${ABCI_HOST:str:localhost}
   port: ${ABCI_PORT:int:26658}
-  use_tendermint: ${ABCI_USE_TENDERMINT:bool:false}
+  use_tendermint: ${ABCI_USE_TENDERMINT:bool:true}
 ---
 public_id: fetchai/http_server:0.22.0
 type: connection
