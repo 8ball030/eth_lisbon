@@ -1,0 +1,19 @@
+name: price_prediction
+author: ethlisbon
+version: 0.1.0
+type: contract
+description: ''
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  __init__.py: bafybeic2qwm54wgfn35kbcqbsqdimypywnrr55ks472w77tf7ei6lgdav4
+  build/PricePrediction.json: bafybeihbfwmtyrluospe5o6rugithkbeaqk4sqwj2qosxxnomdrwtqqgvm
+  contract.py: bafybeidbv6ctbfjhx6lflnqgcd26pp66jqvidf7ubpm3tczhf4hlqfo5my
+fingerprint_ignore_patterns: []
+contracts: []
+class_name: PricePredictionContract
+contract_interface_paths:
+  ethereum: build/PricePrediction.json
+dependencies:
+  open-aea-test-autonomy:
+    version: ==0.3.3

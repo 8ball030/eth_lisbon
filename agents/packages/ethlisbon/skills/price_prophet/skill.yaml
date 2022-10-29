@@ -7,23 +7,27 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeibisvdon6o3mbmdsa3635aoactxwhljrux2tcltgmaarcjdbj6ziu
+  behaviours.py: bafybeignrfyjj4urotw2g2cpdypsd4kyodl2fytr6ttvhzqydg77c4vqwm
   composition.py: bafybeihkmbe6pbcjkwdufgtv3lbeyr45jb6wcsziuvl7szonnx4t2ztifq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeihtlrmy7rudbebbohztrajwcpl6bn2spch2ppxv25qrsttiidnnvm
   handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
-  models.py: bafybeifay5fmr6oean7ae3gkqmundf5y7arpxtysypl5udyalvcscsngu4
+  ml_tools.py: bafybeia4uelusfwcdbaqzulb7zdu7knakxr7jzdiohfk5sz7rzkhncwldu
+  models.py: bafybeifabzdonqvhr6sdmplje4xc26hjmiuuhic2pmlgvoezsgek4rhwim
   payloads.py: bafybeidyvw4v3xivfblvcqxdlvp6yc4cqwrqurytgjkazwow3xi3mmjwk4
-  rounds.py: bafybeic5gicuxipvy6bh4zqytktbw6eip5jvfskfxlr5awn26dgi534mdm
+  rounds.py: bafybeigcv753i5l2aoph47ke55b6mmgqjc5v2v62k4y3pcx56enrl75uva
 fingerprint_ignore_patterns: []
 connections: []
-contracts: []
-protocols: []
+contracts:
+- ethlisbon/price_prediction:0.1.0:bafybeia3njcqwcvqvay4dluryuxfp4iajo6co2acm55okon4wyxqfktbda
+- valory/gnosis_safe:0.1.0:bafybeihjqtlmvgxre2zmyuyddzglxh6irnxk6ha7q4vmyiyhfskoqffpfe
+protocols:
+- valory/contract_api:1.0.0:bafybeiaxbrvgtbdrh4lslskuxyp4awyr4whcx3nqq5yrr6vimzsxg5dy64
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
-- valory/safe_deployment_abci:0.1.0:bafybeidmp6s7okvn6ucbyk74f7ldyaniglv27bnfrht7mynaosqtwl5dji
-- valory/transaction_settlement_abci:0.1.0:bafybeidfko3dboias2tupaehnftzbg4f7jui5753pc7tl2o5oex37l6dre
+- valory/safe_deployment_abci:0.1.0:bafybeibk7pesp44jtzhgegm2ylsijo5xa4gguaui3ef2ckt4hu2tvqamsq
+- valory/transaction_settlement_abci:0.1.0:bafybeiaqfxy3z2ee736n3hmrec4zrij3esk3b4pbln7ayealpobcg2qmti
 behaviours:
   main:
     args: {}
@@ -96,6 +100,7 @@ models:
       max_healthcheck: 120
       observation_interval: 10
       on_chain_service_id: null
+      price_prediction_contract_address: '0xd87bEe9DDD28773ac2EBEE70AE005F2DeB46B400'
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3
