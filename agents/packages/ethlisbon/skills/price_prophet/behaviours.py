@@ -20,7 +20,6 @@
 """This package contains round behaviours of PriceProphetAbciApp."""
 
 import json
-import logging
 from typing import Generator, List, Set, Type, cast, Optional, Any
 
 import requests
@@ -30,13 +29,6 @@ from packages.ethlisbon.contracts.price_prediction.contract import PricePredicti
 from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
 from packages.valory.protocols.contract_api import ContractApiMessage
 from packages.valory.skills.transaction_settlement_abci.payload_tools import hash_payload_to_hex
-
-try:
-    import talib
-    from talib import abstract
-except ImportError:
-    raise ImportError("install TA-Lib using the instruction here: https://cloudstrata.io/install-ta-lib-on-ubuntu-server/")
-
 from packages.ethlisbon.skills.price_prophet.composition import ComposedPriceProphetAbciApp
 from packages.valory.skills.registration_abci.behaviours import AgentRegistrationRoundBehaviour, \
     RegistrationStartupBehaviour
@@ -87,30 +79,8 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
     WeightSharingPayload,
 )
 
-
-# __repr__ display them as dicts, all are in fact classes
-TA_INDICATORS = list(map(abstract.Function, talib.get_functions()))
-COLUMNS = ["timestamp", "open", "high", "low", "close", "volume"]
 SAFE_GAS = 0
 ETH_VALUE = 0
-
-def compute_indicators(df: pd.DataFrame) -> pd.DataFrame:
-    """Compute TA indicators"""
-    # tested as: data = ccxt.kraken().fetch_ohlcv("BTC/USDT")
-    #            df = pd.DataFrame(data, columns=COLUMNS)
-    data = [df]
-    for f in TA_INDICATORS:
-        name = f._Function__name.decode('utf-8')
-        try:
-            transformed = f(df)
-            if len(transformed.shape) == 1:
-                transformed = transformed.to_frame(name=name)
-            data.append(transformed)
-        except Exception:
-            logging.warning(f"could not apply {name}")
-    # expected shape: time x feature = 720 x 180
-    return pd.concat(data, axis=1)
-
 
 class PriceProphetBaseBehaviour(BaseBehaviour):
     """Base behaviour for the common apps' skill."""
