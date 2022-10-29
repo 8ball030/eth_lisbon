@@ -108,6 +108,7 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
             content = compute_indicators(pd.read_json(most_voted)).to_json()
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=content)
+            self.context.logger.info(f"Annotated data: {content}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -183,6 +184,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
             content = pd.DataFrame(data, columns=COLUMNS).to_json()
             sender = self.context.agent_address
             payload = RequestDataPayload(sender=sender, content=content)
+            self.context.logger.info(f"Data retrieved: {content}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -236,6 +238,7 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
 
             sender = self.context.agent_address
             payload = TrainModelPayload(sender=sender, content=bool(results_grid))
+            self.context.logger.info(f"Model trained: {bool(results_grid)}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -376,6 +379,7 @@ class WeightSharingBehaviour(PriceProphetBaseBehaviour):
             results_grid: pd.DataFrame = self.context.shared_state[TrainModelRound.selection_key]
             sender, content = self.context.agent_address, results_grid.to_json()
             payload = WeightSharingPayload(sender=sender, content=content)
+            self.context.logger.info(f"Sharing weights: {content}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
