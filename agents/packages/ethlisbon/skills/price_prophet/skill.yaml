@@ -103,8 +103,10 @@ models:
       service_id: price_prophet
       service_registry_address: null
       setup:
-        safe_contract_address: ${SKILL_PRICE_PROPHET_MODELS_PARAMS_ARGS_SETUP_SAFE_CONTRACT_ADDRESS:list:[]}
-        oracle_contract_address: ${SKILL_PRICE_PROPHET_ABCI_MODELS_PARAMS_ARGS_SETUP_ORACLE_CONTRACT_ADDRESS:list:[]}
+        safe_contract_address:
+        - '0xd87bEe9DDD28773ac2EBEE70AE005F2DeB46B400'
+        oracle_contract_address:
+        - '0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db'
       sleep_time: 1
       tendermint_check_sleep_delay: 3
       tendermint_com_url: http://localhost:8080
