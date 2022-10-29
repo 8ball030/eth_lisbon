@@ -25,7 +25,8 @@ from typing import List, Optional, Set, Tuple
 from packages.valory.skills.abstract_round_abci.base import (
     AbciApp,
     AbciAppTransitionFunction,
-    AbstractRound,
+    CollectSameUntilThresholdRound,
+    VotingRound,
     AppState,
     BaseSynchronizedData,
     DegenerateRound,
@@ -62,157 +63,87 @@ class SynchronizedData(BaseSynchronizedData):
     """
 
 
-class AnnotateDataRound(AbstractRound):
+class BaseRoundMixin:
+    """BaseRoundMixin"""
+
+    synchronized_data_class = SynchronizedData
+    done_event = Event.DONE
+    no_majority_event = Event.NO_MAJORITY
+
+
+class AnnotateDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """AnnotateDataRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "annotate_data"
     allowed_tx_type: Optional[TransactionType] = AnnotateDataPayload.transaction_type
     payload_attribute: str = "annotate_data"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: AnnotateDataPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: AnnotateDataPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class ModelValidationRound(AbstractRound):
+class ModelValidationRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """ModelValidationRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "model_validation"
     allowed_tx_type: Optional[TransactionType] = ModelValidationPayload.transaction_type
     payload_attribute: str = "model_validation"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: ModelValidationPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: ModelValidationPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class PredictionRound(AbstractRound):
+class PredictionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """PredictionRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "prediction"
     allowed_tx_type: Optional[TransactionType] = PredictionPayload.transaction_type
     payload_attribute: str = "prediction"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: PredictionPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: PredictionPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class RequestDataRound(AbstractRound):
+class RequestDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """RequestDataRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "request_data"
     allowed_tx_type: Optional[TransactionType] = RequestDataPayload.transaction_type
     payload_attribute: str = "request_data"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: RequestDataPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: RequestDataPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class StoreDataRound(AbstractRound):
+class StoreDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """StoreDataRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "store_data"
     allowed_tx_type: Optional[TransactionType] = StoreDataPayload.transaction_type
     payload_attribute: str = "store_data"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: StoreDataPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: StoreDataPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class TrainModelRound(AbstractRound):
+class TrainModelRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """TrainModelRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "train_model"
     allowed_tx_type: Optional[TransactionType] = TrainModelPayload.transaction_type
     payload_attribute: str = "train_model"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: TrainModelPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: TrainModelPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class TransactionRound(AbstractRound):
+class TransactionRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """TransactionRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "transaction"
     allowed_tx_type: Optional[TransactionType] = TransactionPayload.transaction_type
     payload_attribute: str = "transaction"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: TransactionPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: TransactionPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class ValidateDataRound(AbstractRound):
+class ValidateDataRound(VotingRound, BaseRoundMixin):
     """ValidateDataRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "validate_data"
     allowed_tx_type: Optional[TransactionType] = ValidateDataPayload.transaction_type
     payload_attribute: str = "validate_data"
@@ -230,28 +161,17 @@ class ValidateDataRound(AbstractRound):
         raise NotImplementedError
 
 
-class WeightSharingRound(AbstractRound):
+class WeightSharingRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     """WeightSharingRound"""
 
-    # TODO: replace AbstractRound with one of CollectDifferentUntilAllRound, CollectSameUntilAllRound, CollectSameUntilThresholdRound, CollectDifferentUntilThresholdRound, OnlyKeeperSendsRound, VotingRound
     round_id: str = "weight_sharing"
     allowed_tx_type: Optional[TransactionType] = WeightSharingPayload.transaction_type
     payload_attribute: str = "weight_sharing"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: WeightSharingPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: WeightSharingPayload) -> None:
-        """Process payload."""
-        raise NotImplementedError
+    collection_key: str  # TODO
+    selection_key: str  # TODO
 
 
-class FinishedTransactionRound(DegenerateRound):
+class FinishedTransactionRound(DegenerateRound, BaseRoundMixin):
     """FinishedTransactionRound"""
 
     round_id: str = "finished_transaction"
@@ -311,5 +231,7 @@ class PriceProphetAbciApp(AbciApp[Event]):
         FinishedTransactionRound: {}
     }
     final_states: Set[AppState] = {FinishedTransactionRound}
-    event_to_timeout: EventToTimeout = {}
+    event_to_timeout: EventToTimeout = {
+        Event.ROUND_TIMEOUT: 30.0,
+    }
     cross_period_persisted_keys: List[str] = []
