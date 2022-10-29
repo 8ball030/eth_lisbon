@@ -53,6 +53,8 @@ class Event(Enum):
     DONE = "done"
     ROUND_TIMEOUT = "round_timeout"
     NO_MAJORITY = "no_majority"
+    NEGATIVE = "negative"
+    NONE = "none"
 
 
 class SynchronizedData(BaseSynchronizedData):
@@ -147,17 +149,12 @@ class ValidateDataRound(VotingRound, BaseRoundMixin):
     round_id: str = "validate_data"
     allowed_tx_type: Optional[TransactionType] = ValidateDataPayload.transaction_type
     payload_attribute: str = "validate_data"
+    negative_event = Event.NEGATIVE
+    none_event = Event.NONE
+    collection_key: str  # TODO
 
     def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
         """Process the end of the block."""
-        raise NotImplementedError
-
-    def check_payload(self, payload: ValidateDataPayload) -> None:
-        """Check payload."""
-        raise NotImplementedError
-
-    def process_payload(self, payload: ValidateDataPayload) -> None:
-        """Process payload."""
         raise NotImplementedError
 
 
