@@ -5,7 +5,11 @@ require('dotenv').config()
 module.exports = {
   networks: {
     "cronos-testnet": {
-        url: process.env.CRONOS_TESTNET_RPC_URL,
+        url: "https://evm-t3.cronos.org/",
+        accounts: [process.env.PRIVATE_KEY]
+    },
+    "cronos-main": {
+        url: "https://evm.cronos.org/",
         accounts: [process.env.PRIVATE_KEY]
     },
   },
