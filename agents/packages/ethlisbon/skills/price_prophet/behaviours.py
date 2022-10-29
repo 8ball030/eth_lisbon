@@ -19,7 +19,10 @@
 
 """This package contains round behaviours of PriceProphetAbciApp."""
 
-from typing import Generator, Set, Type, cast
+from typing import Generator, List, Set, Type, cast
+
+import ccxt
+import pandas as pd
 
 from packages.valory.skills.abstract_round_abci.base import AbstractRound
 from packages.valory.skills.abstract_round_abci.behaviours import (
@@ -140,18 +143,20 @@ class PredictionBehaviour(PriceProphetBaseBehaviour):
 class RequestDataBehaviour(PriceProphetBaseBehaviour):
     """RequestDataBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "request_data"
     matching_round: Type[AbstractRound] = RequestDataRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             sender = self.context.agent_address
-            payload = RequestDataPayload(sender=sender, content=...)
+            columns = ["timestamp", "open", "hi", "low", "close", "volume"]
+            data: List[List[float]] = ccxt.kraken().fetch_ohlcv("BTC/USDT")
+            df = pd.DataFrame(data, columns=columns)
+            content = df.to_json()
+            self.context.logger.info.(f"Price: {df["close"][-1]}")
+            payload = RequestDataPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
