@@ -1,2 +1,2 @@
 export * from './mainContract';
-export * from './goerliContract';
+export * from './cronosContract';

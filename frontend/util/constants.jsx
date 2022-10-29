@@ -1,1 +1,1 @@
-export const CHAIN_ID = [1, 5];
+export const CHAIN_ID = [1, 25];

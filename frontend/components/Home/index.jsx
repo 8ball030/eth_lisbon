@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import AgentTable from '../AgentTable';
 
-const ChartComponent = dynamic(() => import('../LineChart'), { ssr: false });
+const ChartComponent = dynamic(() => import('../PriceProphet'), { ssr: false });
 
 const Component = ({ ftxData }) => (
   <>

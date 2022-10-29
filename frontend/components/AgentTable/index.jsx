@@ -41,9 +41,9 @@ const AgentTable = () => {
   React.useEffect(() => {
     const apiCall = async () => {
       try {
-        const response = await fetch(`${baseURL}/peers/1`);
+        const response = await fetch(`${baseURL}/peers`);
         const data = await response.json();
-        setAgentData([data]);
+        setAgentData(data);
       } catch (error) {
         console.error('Some error occured!', error);
       }

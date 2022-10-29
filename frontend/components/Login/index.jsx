@@ -48,6 +48,8 @@ const Login = ({
     web3Provider,
     setProvider,
     setWeb3Provider,
+    setPredictedData,
+    setEventsData,
   } = useContext(DataContext);
 
   const setBalance = async (accountPassed) => {
@@ -89,11 +91,9 @@ const Login = ({
 
       /* --------------- Contract call --------------- */
       const contract = getContract(modalProvider, currentChainId);
-      console.log(modalProvider, currentChainId, contract);
-      const response = await contract.methods
-        .owner()
-        .call();
-      console.log(response);
+      const response = await contract.methods.getPriceData().call();
+      setPredictedData(response);
+      setEventsData(contract.events);
     } catch (error) {
       window.console.error(error);
     }
@@ -180,9 +180,7 @@ const Login = ({
       <DetailsContainer>
         <WalletContainer>
           {!CHAIN_ID.includes(chainId) && (
-            <div className="unsupported-network">
-              Unsupported network
-            </div>
+            <div className="unsupported-network">Unsupported network</div>
           )}
           <div>{isNil(balance) ? '--' : `${round(balance, 2)} ETH`}</div>
           <div className="dash" />
