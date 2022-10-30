@@ -22,7 +22,7 @@
 import time
 from typing import Tuple
 import logging
-
+from joblib import dump
 import numpy as np
 import pandas as pd
 
@@ -149,6 +149,7 @@ def train_model(x: pd.DataFrame, random_state: int):
     )
 
     # ['lags', 'params', 'mean_squared_error', 'max_depth', 'n_estimators']
+    dump(forecaster, "model_file")
     return results_grid
 
 
