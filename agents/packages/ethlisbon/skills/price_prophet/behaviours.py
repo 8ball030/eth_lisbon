@@ -108,6 +108,7 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         return file_path
 
 
+from collections import Counter
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
 
@@ -119,7 +120,9 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             most_voted: JSONLike = self.get_strict(RequestDataRound.selection_key)
-            content = compute_indicators(pd.read_json(most_voted)).to_json()
+            df = compute_indicators(pd.read_json(most_voted))
+            cols = [k for k, v in Counter(df.columns).items()  if v ==1]
+            content = df[cols].to_json()
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=content)
             self.context.logger.info(f"Annotated data: {content}")

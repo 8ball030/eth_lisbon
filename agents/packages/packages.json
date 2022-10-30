@@ -21,8 +21,7 @@
     "skill/valory/transaction_settlement_abci/0.1.0": "bafybeidfko3dboias2tupaehnftzbg4f7jui5753pc7tl2o5oex37l6dre",
     "connection/fetchai/http_server/0.22.0": "bafybeihtdignhuz6hjmay5jjcs6eqkfm4ispvk2upr3rynallaz2heo2ti",
     "protocol/fetchai/default/1.0.0": "bafybeigwlziluwyzq66gfc2r4ln4j6xj5ovhijk4btddjkv6ej73ilhjai",
-    "skill/ethlisbon/price_prophet/0.1.0": "bafybeibmtxer4ek7yuwobsyfezrlpzlvy77zoqnqy6mvcmygdzcvxfbuxe",
-    "agent/ethlisbon/price_prophet/0.1.0": "bafybeic4ewcsdv3gnuafl362hh3ys5s45exwred6qaqveuzk7ormfijiea",
-    "service/ethlisbon/price_prophet/0.1.0": "bafybeia3j42yaaezbulltqxi5ttruy4ucltxcsxnmjtmk2bw655fpmzrr4",
-    "skill/valory/reset_pause_abci/0.1.0": "bafybeibplkijgsex7ikdkchzbbspyvyvic3tupq5kxm6pwih6vz4p6ckfi"
+    "skill/ethlisbon/price_prophet/0.1.0": "bafybeifwh7gl2624vjzhtokrwxma7s5chhwzkssd7l5ffbko7qx6vo4f4u",
+    "agent/ethlisbon/price_prophet/0.1.0": "bafybeiefp6t2r2zr6nh7tjt5u72tjzjcn7ggfy3r7bjnzsmghieksxra4y",
+    "service/ethlisbon/price_prophet/0.1.0": "bafybeih5l4q3chmivcbzfb7mxv3zzw3u4slakyk5xevssyntt775nc6zf4"
 }
