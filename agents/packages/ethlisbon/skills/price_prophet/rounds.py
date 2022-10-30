@@ -120,8 +120,8 @@ class StoreDataRound(CollectSameUntilThresholdRound, BaseRoundMixin):
     round_id: str = "store_data"
     allowed_tx_type: Optional[TransactionType] = StoreDataPayload.transaction_type
     payload_attribute: str = "store_data"
-    collection_key: str = "participant_to_data_package"
-    selection_key: str = "most_voted_data_package"
+    collection_key: str = "participant_to_ipfs_hash"
+    selection_key: str = "most_voted_ipfs_hash"
 
 
 class TrainModelRound(CollectSameUntilThresholdRound, BaseRoundMixin):
