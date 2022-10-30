@@ -1,0 +1,37 @@
+name: http_echo
+author: ethlisbon
+version: 0.1.0
+type: skill
+description: The http echo skill prints out the content of received http messages
+  and responds with success.
+license: Apache-2.0
+aea_version: '>=1.0.0, <2.0.0'
+fingerprint:
+  README.md: bafybeiesl5jlvvu4enydib32bpyfqphlkdulxy3oqid3t32cjxya5qykci
+  __init__.py: bafybeihcd6agldq3wbbprwxp4xok2gsyleu4j5otph3zuyqvzzlc4ufalq
+  dialogues.py: bafybeif475776gtmo3jd5vch6ir7pgqx7uvtfn3tw3skhwismjv7h5z2hm
+  handlers.py: bafybeidglvofqvwmqb5tvjcrlwuvzq6wt5o6p3r4zqy3ng7zaqe53pzcsi
+  tests/__init__.py: bafybeigqjv34vhfwcxmri75l5opezgu66jsyjj7metj7lgk2jbx4rqztyy
+  tests/test_dialogues.py: bafybeicv3ergrec34zxhll7lwm675eykxugxazfk6wsvzbcq35vsd7tokm
+  tests/test_handlers.py: bafybeiac6bctbt25nernv43p3vlxtoy32lu32s6g5ppm2xyxnve2alrh6e
+fingerprint_ignore_patterns: []
+connections: []
+contracts: []
+protocols:
+- fetchai/default:1.0.0:bafybeihzesahyayexkhk26fg7rqnjuqaab3bmcijtjekvskvs4xw6ecyuu
+- valory/http:1.0.0:bafybeigzqo2zaakcjtzzsm6dh4x73v72xg6ctk6muyp5uq5ueb7y34fbxy
+skills: []
+behaviours: {}
+handlers:
+  http_handler:
+    args: {}
+    class_name: HttpHandler
+models:
+  default_dialogues:
+    args: {}
+    class_name: DefaultDialogues
+  http_dialogues:
+    args: {}
+    class_name: HttpDialogues
+dependencies: {}
+is_abstract: false
