@@ -29,7 +29,7 @@ import requests
 from scipy.stats import linregress
 import pandas as pd
 import ipfshttpclient
-
+from joblib import dump, load
 from packages.ethlisbon.contracts.price_prediction.contract import PricePredictionContract
 from packages.valory.contracts.gnosis_safe.contract import GnosisSafeContract
 from packages.valory.protocols.contract_api import ContractApiMessage
@@ -51,7 +51,7 @@ from packages.ethlisbon.skills.price_prophet.ml_tools import (
     STEPS_INTO_THE_FUTURE,
     forecaster,
     compute_indicators,
-    train_model,
+    train_model, Y_TARGET
 )
 from packages.ethlisbon.skills.price_prophet.models import Params
 from packages.ethlisbon.skills.price_prophet.rounds import (
@@ -171,6 +171,7 @@ class PredictionBehaviour(PriceProphetBaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            forecaster = load("model_file")
             predictions = forecaster.predict(steps=STEPS_INTO_THE_FUTURE)
             sender, content = self.context.agent_address, predictions.to_json()
             payload = PredictionPayload(sender=sender, content=content)
@@ -263,8 +264,8 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
                 self.context.logger.error(f"Failed to complete training forecaster: {e}")
 
             sender = self.context.agent_address
-            payload = TrainModelPayload(sender=sender, content=bool(results_grid))
-            self.context.logger.info(f"Model trained: {bool(results_grid)}")
+            payload = TrainModelPayload(sender=sender, content=len(results_grid) > 0)
+            self.context.logger.info(f"Model trained: {len(results_grid) > 0}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)

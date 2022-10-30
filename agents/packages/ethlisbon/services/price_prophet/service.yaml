@@ -7,6 +7,7 @@ license: Apache-2.0
 fingerprint: {}
 fingerprint_ignore_patterns: []
 agent: ethlisbon/price_prophet:0.1.0:bafybeicrumtd27ri3nbv5mc5lwhikhn4t6i7lmpd543se44ahfsalcfqpe
+
 number_of_agents: 4
 ---
 params:
