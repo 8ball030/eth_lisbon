@@ -122,8 +122,8 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
             content = compute_indicators(pd.read_json(most_voted)).to_json()
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=content)
-            self.file_path_for_storage.write_text(content)
             self.context.logger.info(f"Annotated data: {content}")
+            self.file_path_for_storage.write_text(content)
             self.context.logger.info(f"Annotated data written to: {self.file_path_for_storage}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
@@ -212,12 +212,9 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
 class StoreDataBehaviour(PriceProphetBaseBehaviour):
     """StoreDataBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "store_data"
     matching_round: Type[AbstractRound] = StoreDataRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
         
@@ -225,11 +222,13 @@ class StoreDataBehaviour(PriceProphetBaseBehaviour):
         ipfs_tool = ipfshttpclient.Client(addr=DEFAULT_REGISTRY)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            res = ipfs_tool.add("data.csv", pin=True)
-            data_set = res.as_json()['Hash']
+            file = str(self.file_path_for_storage)
+            self.context.logger.info(f"Storing: {file}")
+            res = ipfs_tool.add(file, pin=True)
+            content = res.as_json()['Hash']
             sender = self.context.agent_address
-            payload = StoreDataPayload(sender=sender, content=...)
-
+            payload = StoreDataPayload(sender=sender, content=content)
+            self.context.logger.info(f"IPFS hash data: {content}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
