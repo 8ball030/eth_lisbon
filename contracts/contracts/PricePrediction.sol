@@ -15,20 +15,20 @@ contract PricePrediction is Ownable {
 
     //Variables
     struct PriceDataStruct{
-        uint lastRateOfChange;
-        uint rateOfChange;
+        int lastRateOfChange;
+        int rateOfChange;
         uint lastPrice;
         uint price;
     }
     PriceDataStruct public priceData;
 
     //Events
-    event LogPriceDataUpdated(address sender, uint rateOfChange, uint price);
+    event LogPriceDataUpdated(address sender, int rateOfChange, uint price);
 
     constructor(){}
 
 
-    function updatePriceData(uint _rateOfChange, uint _price) public onlyOwner returns(bool success){
+    function updatePriceData(int _rateOfChange, uint _price) public onlyOwner returns(bool success){
         
         PriceDataStruct storage d = priceData;
 
