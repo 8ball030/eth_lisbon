@@ -460,6 +460,8 @@ class GnosisSafeContract(Contract):
             and max_priority_fee_per_gas is None
         ):
             tx_parameters.update(ledger_api.try_get_gas_pricing(old_price=old_price))
+            del tx_parameters["baseFee"]
+
         # note, the next line makes an eth_estimateGas call if gas is not set!
         transaction_dict = w3_tx.buildTransaction(tx_parameters)
         if configured_gas != MIN_GAS:
@@ -474,7 +476,7 @@ class GnosisSafeContract(Contract):
                 Wei(gas_estimate) if gas_estimate is not None else fallback_gas
             )
         transaction_dict["nonce"] = nonce  # pragma: nocover
-        
+ #      transaction_dict['gas'] = 2000000
         return transaction_dict
 
     @classmethod
