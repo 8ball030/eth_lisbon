@@ -50,9 +50,9 @@ N_BACKTESTING = STEPS_INTO_THE_FUTURE * 3
 DEFAULT_LAGS = 5
 
 # hyperparameter optimization
-LAGS_GRID = [5, 10]
+LAGS_GRID = [1, 1]
 PARAM_GRID = dict(
-    n_estimators=[100, 500],
+    n_estimators=[10, 50],
 )
 
 RMSE = make_scorer(mean_squared_error, squared=True, greater_is_better=False)
