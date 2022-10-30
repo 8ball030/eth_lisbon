@@ -15,7 +15,7 @@ connections:
 - valory/p2p_libp2p_client:0.1.0:bafybeihf35zfr35qsvfte4vbi7njvuzfx4httysw7owmlux53gvxh2or54
 contracts:
 - ethlisbon/price_prediction:0.1.0:bafybeia3njcqwcvqvay4dluryuxfp4iajo6co2acm55okon4wyxqfktbda
-- valory/gnosis_safe:0.1.0:bafybeieh43hzlpsxcbaw76jjctltpyhqaxcjgpv5s7x4j5avqijh52md24
+- valory/gnosis_safe:0.1.0:bafybeia45l2qlgbz5syfthhzqwk3vpx357rceu2kiv4zuhh2brs6pvjvxy
 - valory/gnosis_safe_proxy_factory:0.1.0:bafybeifjehgxbajs2gszgo3xtkecutuuyr2sde4y7gqssttcqkdmkd4rvm
 - valory/service_registry:0.1.0:bafybeigf6dcpf3dfjf4ymghvmpmhq23cptt7cwxowoypvmyvaadsivvvou
 protocols:
@@ -28,12 +28,12 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeih7rhi5zvfvwakx5ifgxsz2cfipeecsh7bm3gnudjxtvhrygpcftq
 - valory/tendermint:0.1.0:bafybeihcnjhovvyyfbkuw5sjyfx2lfd4soeocfqzxz54g67333m6nk5gxq
 skills:
-- ethlisbon/price_prophet:0.1.0:bafybeigkfhnxrccqqtovgtohsltbbnrzqw7oepb3fcmdd6etbssuhgaz4i
+- ethlisbon/price_prophet:0.1.0:bafybeig2extdaq5lr7r7v4g6ox45pelyhqigzlubhx2cmopg3ntwh7nzzu
 - valory/abstract_abci:0.1.0:bafybeiagrbn76jal52v2egtuwelcam3e2huzc6pwjtux2dh5hktxn7em3y
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
-- valory/safe_deployment_abci:0.1.0:bafybeidmp6s7okvn6ucbyk74f7ldyaniglv27bnfrht7mynaosqtwl5dji
-- valory/transaction_settlement_abci:0.1.0:bafybeidfko3dboias2tupaehnftzbg4f7jui5753pc7tl2o5oex37l6dre
+- valory/safe_deployment_abci:0.1.0:bafybeiccqsdx4quw7pmb6kw7e5eqa7q7ssirjxmx7pqswdvui77d6nugfy
+- valory/transaction_settlement_abci:0.1.0:bafybeigzljac4k6rd4bnynkwb7akrqubdam4trdcy7vyaiirehlumnjqsa
 default_ledger: ethereum
 required_ledgers:
 - ethereum

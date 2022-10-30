@@ -23,8 +23,10 @@ import time
 import json
 from typing import Generator, List, Set, Type, cast, Optional, Any
 from pathlib import Path
+from collections import Counter
 
 import requests
+from scipy.stats import linregress
 import pandas as pd
 import ipfshttpclient
 from joblib import dump, load
@@ -106,7 +108,6 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         return file_path
 
 
-from collections import Counter
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
 
@@ -119,11 +120,11 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             most_voted: JSONLike = self.get_strict(RequestDataRound.selection_key)
             df = compute_indicators(pd.read_json(most_voted))
-            cols = [k for k, v in Counter(df.columns).items()  if v ==1]
-            content = df[cols].to_json()
+            cols = [k for k, v in Counter(df.columns).items() if v == 1]
+            content = df[cols].to_json()  # must remove duplicate column names
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=hash(content))
-            self.context.logger.info(f"Annotated data: {content}")
+            self.context.logger.debug(f"Annotated data: {content}")
             self.file_path_for_storage.write_text(content)
             self.context.logger.info(f"Annotated data written to: {self.file_path_for_storage}")
 
@@ -205,7 +206,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
             df["timestamp"] = df["timestamp"].astype(int) // 10 ** 9  # unix_sec
             sender, content = self.context.agent_address, df.to_json()
             payload = RequestDataPayload(sender=sender, content=content)
-            self.context.logger.info(f"Data retrieved: {content}")
+            self.context.logger.info(f"Data retrieved: {len(content)}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -287,6 +288,7 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
             payload_data = yield from self.get_tx()
             sender = self.context.agent_address
             payload = TransactionPayload(sender=sender, content=payload_data)
+            self.context.logger.info(f"Transaction: {payload_data}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -344,8 +346,15 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
         self,
     ) -> Generator[None, None, Optional[bytes]]:
         """Get the tx data."""
-        rate_of_change = 1  # TODO: get this from synchronized_data
-        price = 1  # TODO: get this from synchronized_data
+
+        most_voted: JSONLike = self.get_strict(PredictionRound.selection_key)
+        prediction: pd.Series =  pd.DataFrame(json.loads(most_voted), index=[0]).transpose().mean()
+
+        observations: JSONLike = self.get_strict(RequestDataRound.selection_key)
+        current_price: float = pd.read_json(observations).iloc[-1].close
+
+        rate_of_change = int(((prediction - current_price) / current_price) * 10000)
+        price = int(prediction[0] * 10000)
         response = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_id=str(PricePredictionContract.contract_id),
