@@ -476,7 +476,6 @@ class GnosisSafeContract(Contract):
                 Wei(gas_estimate) if gas_estimate is not None else fallback_gas
             )
         transaction_dict["nonce"] = nonce  # pragma: nocover
- #      transaction_dict['gas'] = 2000000
         return transaction_dict
 
     @classmethod

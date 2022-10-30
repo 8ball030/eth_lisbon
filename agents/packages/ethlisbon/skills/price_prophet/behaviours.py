@@ -353,8 +353,9 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
         observations: JSONLike = self.get_strict(RequestDataRound.selection_key)
         current_price: float = pd.read_json(observations).iloc[-1].close
 
-        rate_of_change = int(((prediction - current_price) / current_price) * 10000) + 1000000
+        rate_of_change = int(((prediction - current_price) / current_price) * 10000) + 10000000
         price = int(prediction[0] * 10000)
+        self.context.logger.info(f"Preparing the onchain tx. {price} @ {rate_of_change}")
         response = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_id=str(PricePredictionContract.contract_id),
