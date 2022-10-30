@@ -7,15 +7,15 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeighdew4fpm6acayib7zl4captybwwr427eabvnhxx6kudhntssadu
+  behaviours.py: bafybeihk734rw4fqqodwx5qhem5c3pgn7576gq5kff3q2uric44ku6yy7i
   composition.py: bafybeihkmbe6pbcjkwdufgtv3lbeyr45jb6wcsziuvl7szonnx4t2ztifq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeif4wharus4htdvqawyakcnc3os6sdbtcmy2tpqcgerqaysuwzf4ri
   handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
-  ml_tools.py: bafybeicfe3p2thb74ypjucu7t4txrugpdgcok6spl7jaomqe3scyzz7ba4
+  ml_tools.py: bafybeictur3qnfbg4tngcwvqvrwr4qncvq6xfagelx4mt7xm4mlk5evhoe
   models.py: bafybeifabzdonqvhr6sdmplje4xc26hjmiuuhic2pmlgvoezsgek4rhwim
   payloads.py: bafybeiagne2ju4rszjy6nqeahjq5v7zxvtr62elrqk4f7qywpssw6itkxe
-  rounds.py: bafybeibwggc4k5kthly6giisixhaxhtduvdxfmehm2qgm6wo6vwj4irfv4
+  rounds.py: bafybeibg56zfmlfk645bax5uemmnzw3nplnbrtinnhl2locwrgpb4girsq
 fingerprint_ignore_patterns: []
 connections: []
 contracts:
@@ -105,7 +105,7 @@ models:
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3
-      round_timeout_seconds: 30.0
+      round_timeout_seconds: 60.0
       service_id: price_prophet
       service_registry_address: null
       setup:

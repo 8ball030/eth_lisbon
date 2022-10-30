@@ -227,6 +227,6 @@ class PriceProphetAbciApp(AbciApp[Event]):
     }
     final_states: Set[AppState] = {FinishedTransactionRound}
     event_to_timeout: EventToTimeout = {
-        Event.ROUND_TIMEOUT: 30.0,
+        Event.ROUND_TIMEOUT: 60.0,
     }
     cross_period_persisted_keys: List[str] = []
