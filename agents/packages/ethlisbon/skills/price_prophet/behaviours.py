@@ -23,8 +23,10 @@ import time
 import json
 from typing import Generator, List, Set, Type, cast, Optional, Any
 from pathlib import Path
+from collections import Counter
 
 import requests
+from scipy.stats import linregress
 import pandas as pd
 import ipfshttpclient
 
@@ -106,7 +108,6 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         return file_path
 
 
-from collections import Counter
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
 
@@ -119,8 +120,8 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             most_voted: JSONLike = self.get_strict(RequestDataRound.selection_key)
             df = compute_indicators(pd.read_json(most_voted))
-            cols = [k for k, v in Counter(df.columns).items()  if v ==1]
-            content = df[cols].to_json()
+            cols = [k for k, v in Counter(df.columns).items() if v == 1]
+            content = df[cols].to_json()  # must remove duplicate column names
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=hash(content))
             self.context.logger.info(f"Annotated data: {content}")
@@ -286,6 +287,7 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
             payload_data = yield from self.get_tx()
             sender = self.context.agent_address
             payload = TransactionPayload(sender=sender, content=payload_data)
+            self.context.logger.info(f"Transaction: {payload_data}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -343,8 +345,12 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
         self,
     ) -> Generator[None, None, Optional[bytes]]:
         """Get the tx data."""
-        rate_of_change = 1  # TODO: get this from synchronized_data
-        price = 1  # TODO: get this from synchronized_data
+
+        most_voted: JSONLike = self.get_strict(PredictionRound.selection_key)
+        predictions: pd.Series = pd.read_json(most_voted)
+
+        rate_of_change = linregress(predictions.reset_index()).slope
+        price = predictions[-1]
         response = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_id=str(PricePredictionContract.contract_id),
