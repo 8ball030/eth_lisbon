@@ -60,7 +60,7 @@ contract PricePredictOracleStorage is Ownable{
     }
 
 
-    function updateSingleOracleData(uint _oracleIndex) public idExists(_oracleIndex) returns(bool success){
+    function updateSingleOracleData(uint _oracleIndex) public idExists(_oracleIndex) returns(OracleStruct memory singleOracle){
 
         OracleStruct storage oracle = oracles[_oracleIndex];
 
@@ -72,7 +72,17 @@ contract PricePredictOracleStorage is Ownable{
         oracle.storedDate = date;
 
         emit LogValueChanged(_oracleIndex, value, date);
-        return true;
+        return oracle;
+    }
+
+
+    function updateMultipleOracleData() public returns(OracleStruct[] memory multipleOracles){
+
+        for(uint i=0; i<oracles.length; i++) {
+            updateSingleOracleData(i);
+        }
+
+        return oracles;
     }
 
 
