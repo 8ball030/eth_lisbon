@@ -29,6 +29,24 @@ It is an agent system that polls cryptocurrency price data from different exchan
 Run the entire stack with the following commands
 
 
+## Installation
+
+make sure to cd into the agents directory first
+```bash
+cd agents
+```
+
+Create and launch a virtual environment
+```
+make new_env && pipenv shell
+```
+
+Fetch the necessary packages
+```
+autonomy packages sync --update-packages
+```
+
+
 ## The agent operator
 
 In order to run the agent system, one must set a private key for the agent, e.g.
