@@ -15,7 +15,7 @@ connections:
 - valory/p2p_libp2p_client:0.1.0:bafybeihf35zfr35qsvfte4vbi7njvuzfx4httysw7owmlux53gvxh2or54
 contracts:
 - ethlisbon/price_prediction:0.1.0:bafybeia3njcqwcvqvay4dluryuxfp4iajo6co2acm55okon4wyxqfktbda
-- valory/gnosis_safe:0.1.0:bafybeibtsvh3q5vemwzfd4krll4pnbfejw42jjvw44tuo4j2nesqz7ywiu
+- valory/gnosis_safe:0.1.0:bafybeidvyzn63xfpbrhlls5afb3bsumqa4zwuwgytu54airglnomqiv37a
 - valory/gnosis_safe_proxy_factory:0.1.0:bafybeifjehgxbajs2gszgo3xtkecutuuyr2sde4y7gqssttcqkdmkd4rvm
 - valory/service_registry:0.1.0:bafybeigf6dcpf3dfjf4ymghvmpmhq23cptt7cwxowoypvmyvaadsivvvou
 protocols:
