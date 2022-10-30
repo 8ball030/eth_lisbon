@@ -20,7 +20,11 @@
 """This package contains round behaviours of PriceProphetAbciApp."""
 
 import json
+import logging
 from typing import Generator, List, Set, Type, cast, Optional, Any
+import tempfile
+from pathlib import Path
+import functools
 
 import requests
 import pandas as pd
@@ -75,7 +79,7 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 
 SAFE_GAS = 0
 ETH_VALUE = 0
-DEFAULT_REGISTRY="/dns/registry.autonolas.tech/tcp/443/https"
+DEFAULT_REGISTRY = "/dns/registry.autonolas.tech/tcp/443/https"
 
 
 class PriceProphetBaseBehaviour(BaseBehaviour):
@@ -95,6 +99,14 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         """Get strict from SynchronizedData"""
         return self.synchronized_data.db.get_strict(key)
 
+    @functools.cached_property
+    def file_path_for_storage(self):
+        """File path for storage"""
+        tmp_dir = Path(tempfile.TemporaryDirectory().name)
+        tmp_dir.mkdir(parents=True)
+        file_path = Path(tmp_dir / "price_prophet.csv")
+        return file_path
+
 
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
@@ -106,11 +118,13 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            most_voted: JSONLike = self.get_strict(StoreDataRound.selection_key)
+            most_voted: JSONLike = self.get_strict(RequestDataRound.selection_key)
             content = compute_indicators(pd.read_json(most_voted)).to_json()
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=content)
+            self.file_path_for_storage.write_text(content)
             self.context.logger.info(f"Annotated data: {content}")
+            self.context.logger.info(f"Annotated data written to: {self.file_path_for_storage}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
