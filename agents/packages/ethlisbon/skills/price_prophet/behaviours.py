@@ -19,12 +19,10 @@
 
 """This package contains round behaviours of PriceProphetAbciApp."""
 
+import time
 import json
-import logging
 from typing import Generator, List, Set, Type, cast, Optional, Any
-import tempfile
 from pathlib import Path
-import functools
 
 import requests
 import pandas as pd
@@ -48,6 +46,8 @@ from packages.valory.skills.abstract_round_abci.behaviours import (
 
 from packages.ethlisbon.skills.price_prophet.ml_tools import (
     COLUMNS,
+    STEPS_INTO_THE_FUTURE,
+    forecaster,
     compute_indicators,
     train_model,
 )
@@ -137,18 +137,21 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
 class ModelValidationBehaviour(PriceProphetBaseBehaviour):
     """ModelValidationBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "model_validation"
     matching_round: Type[AbstractRound] = ModelValidationRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            # ['lags', 'params', 'mean_squared_error', 'max_depth', 'n_estimators']
+            most_voted: JSONLike = self.get_strict(WeightSharingRound.selection_key)
+            results_grid = pd.read_json(most_voted)
+            results_grid.sort_values(by="mean_squared_error", inplace=True)
+            forecaster.set_params(**results_grid.params[0])
+            forecaster.set_lags(results_grid.lags[0])
             sender = self.context.agent_address
-            payload = ModelValidationPayload(sender=sender, content=...)
+            payload = ModelValidationPayload(sender=sender, content=True)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -160,18 +163,16 @@ class ModelValidationBehaviour(PriceProphetBaseBehaviour):
 class PredictionBehaviour(PriceProphetBaseBehaviour):
     """PredictionBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "prediction"
     matching_round: Type[AbstractRound] = PredictionRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-            payload = PredictionPayload(sender=sender, content=...)
+            predictions = forecaster.predict(steps=STEPS_INTO_THE_FUTURE)
+            sender, content = self.context.agent_address, predictions.to_json()
+            payload = PredictionPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -198,7 +199,9 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             result = requests.get(self.endpoint_url)
             data: List[List[float]] = json.loads(result.content)["result"]
+            # columns must be COLUMNS
             df = pd.DataFrame(data).rename(columns=dict(time="timestamp")).drop("startTime", axis=1)
+            df["timestamp"] = df["timestamp"].astype(int) // 10 ** 9  # unix_sec
             sender, content = self.context.agent_address, df.to_json()
             payload = RequestDataPayload(sender=sender, content=content)
             self.context.logger.info(f"Data retrieved: {content}")
@@ -218,7 +221,7 @@ class StoreDataBehaviour(PriceProphetBaseBehaviour):
 
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
-        
+
         ipfs_tool = ipfshttpclient.Client(addr=DEFAULT_REGISTRY)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
@@ -250,8 +253,10 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             random_state = self.synchronized_data.period_count
             try:
-                results_grid = train_model(pd.read_json(".csv"), random_state)
+                self.context.logger.info(f"Training, current time: {time.time()}")
+                results_grid = train_model(pd.read_json(self.file_path_for_storage), random_state)
                 self.context.shared_state[TrainModelRound.selection_key] = results_grid
+                self.context.logger.info(f"Successfully DONE training at: {time.time()}")
             except Exception as e:
                 results_grid = None
                 self.context.logger.error(f"Failed to complete training forecaster: {e}")
