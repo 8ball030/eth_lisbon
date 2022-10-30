@@ -1,4 +1,4 @@
-# PriceProphet
+# ![](./frontend/Logo_ETH_Lisbon.webp) PriceProphet ![](./frontend/Logo_ETH_Lisbon.webp)
 Hackathon repository for ETH Lisbon 2022
 
 
@@ -136,6 +136,7 @@ Starting AEA 'agent' in 'async' mode...
 ...
 ```
 
+The IPFS hash traces here: [QmaDrsBBSbeuFjQuJ338ZvMJKxvZax3x3RT8XaDuhuq6hc](https://gateway.autonolas.tech/ipfs/QmaDrsBBSbeuFjQuJ338ZvMJKxvZax3x3RT8XaDuhuq6hc)
 
 
 ## An overview of the application
