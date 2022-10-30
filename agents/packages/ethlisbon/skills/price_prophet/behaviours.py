@@ -254,9 +254,9 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
             random_state = self.synchronized_data.period_count
             try:
                 self.context.logger.info(f"Training, current time: {time.time()}")
-                results_grid = train_model(pd.read_json(".csv"), random_state)
+                results_grid = train_model(pd.read_json(self.file_path_for_storage), random_state)
                 self.context.shared_state[TrainModelRound.selection_key] = results_grid
-                self.context.logger.info(f"DONE training at: {time.time()}")
+                self.context.logger.info(f"Successfully DONE training at: {time.time()}")
             except Exception as e:
                 results_grid = None
                 self.context.logger.error(f"Failed to complete training forecaster: {e}")
