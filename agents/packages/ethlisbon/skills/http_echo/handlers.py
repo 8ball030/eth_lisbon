@@ -118,7 +118,7 @@ class HttpHandler(Handler):
             status_code=200,
             status_text="Success",
             headers=http_msg.headers,
-            body=json.dumps(self.context.shared_state.get("public_data", {})).encode("utf-8"),
+            body=json.dumps([self.context.shared_state.get("public_data", {})]).encode("utf-8"),
         )
         self.context.logger.info("responding with: {}".format(http_response))
         self.context.outbox.put_message(message=http_response)
