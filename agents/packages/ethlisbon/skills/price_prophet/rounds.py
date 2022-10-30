@@ -153,10 +153,7 @@ class ValidateDataRound(VotingRound, BaseRoundMixin):
     negative_event = Event.NEGATIVE
     none_event = Event.NONE
     collection_key: str = "participant_to_votes"
-
-    def end_block(self) -> Optional[Tuple[BaseSynchronizedData, Enum]]:
-        """Process the end of the block."""
-        raise NotImplementedError
+    selection_key: str = "most_voted"
 
 
 class WeightSharingRound(CollectSameUntilThresholdRound, BaseRoundMixin):

@@ -109,6 +109,9 @@ class ValidateDataPayload(BasePriceProphetPayload):
 
     transaction_type = TransactionType.VALIDATE_DATA
 
+    @property
+    def vote(self):
+        return self.data.get("content")
 
 class WeightSharingPayload(BasePriceProphetPayload):
     """Represent a transaction payload for the WeightSharingRound."""

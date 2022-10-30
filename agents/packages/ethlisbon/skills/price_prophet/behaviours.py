@@ -249,9 +249,8 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
         # TODO: get randomness from randomness beacon
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             random_state = self.synchronized_data.period_count
-            most_voted: JSONLike = self.get_strict(AnnotateDataRound.selection_key)
             try:
-                results_grid = train_model(pd.read_json(most_voted), random_state)
+                results_grid = train_model(pd.read_json(self.local_data_for_storage), random_state)
                 self.context.shared_state[TrainModelRound.selection_key] = results_grid
             except Exception as e:
                 results_grid = None
@@ -375,7 +374,8 @@ class ValidateDataBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             most_voted = self.get_strict(StoreDataRound.selection_key)
             sender = self.context.agent_address
-            payload = ValidateDataPayload(sender=sender, content=most_voted)
+            payload = ValidateDataPayload(sender=sender, content=True)
+            self.context.logger.info(f"Validated the data : {most_voted}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
