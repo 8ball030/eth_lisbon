@@ -102,9 +102,7 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
     @functools.cached_property
     def file_path_for_storage(self):
         """File path for storage"""
-        tmp_dir = Path(tempfile.TemporaryDirectory().name)
-        tmp_dir.mkdir(parents=True)
-        file_path = Path(tmp_dir / "price_prophet.csv")
+        file_path = Path("price_prophet.csv")
         return file_path
 
 
@@ -124,7 +122,7 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
             cols = [k for k, v in Counter(df.columns).items()  if v ==1]
             content = df[cols].to_json()
             sender = self.context.agent_address
-            payload = AnnotateDataPayload(sender=sender, content=content)
+            payload = AnnotateDataPayload(sender=sender, content=hash(content))
             self.context.logger.info(f"Annotated data: {content}")
             self.file_path_for_storage.write_text(content)
             self.context.logger.info(f"Annotated data written to: {self.file_path_for_storage}")
@@ -221,7 +219,6 @@ class StoreDataBehaviour(PriceProphetBaseBehaviour):
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
         
-        breakpoint()
         ipfs_tool = ipfshttpclient.Client(addr=DEFAULT_REGISTRY)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
