@@ -7,13 +7,12 @@ license: Apache-2.0
 aea_version: '>=1.0.0, <2.0.0'
 fingerprint:
   __init__.py: bafybeienxroy5pao7ry66wtmsgmecgbk35qhismbpcyf57ilt6hm5puav4
-  behaviours.py: bafybeiflzr6dj346unipurmjlrrmx5kqhapzfbfaanyjowvta5jovizsny
-
+  behaviours.py: bafybeigaxq3t37bjlxdkc2ws3o3mlatl73hf6reunekwygmneijugp4zne
   composition.py: bafybeihkmbe6pbcjkwdufgtv3lbeyr45jb6wcsziuvl7szonnx4t2ztifq
   dialogues.py: bafybeie5h3os6xwxgpakepb3jncqyjwahjfllpzghki6ah5mrfk2c4e4e4
   fsm_specification.yaml: bafybeif4wharus4htdvqawyakcnc3os6sdbtcmy2tpqcgerqaysuwzf4ri
   handlers.py: bafybeicegwqj23uhhygx3rbfr3my2r5zvxemcrtaawwrjpm4ru2sw6co4a
-  ml_tools.py: bafybeictur3qnfbg4tngcwvqvrwr4qncvq6xfagelx4mt7xm4mlk5evhoe
+  ml_tools.py: bafybeifs2hf4suuvoxqignx2y3vr6wqnm74ede2523sp4apa7hy6opuvcy
   models.py: bafybeifabzdonqvhr6sdmplje4xc26hjmiuuhic2pmlgvoezsgek4rhwim
   payloads.py: bafybeiagne2ju4rszjy6nqeahjq5v7zxvtr62elrqk4f7qywpssw6itkxe
   rounds.py: bafybeibg56zfmlfk645bax5uemmnzw3nplnbrtinnhl2locwrgpb4girsq
@@ -21,14 +20,14 @@ fingerprint_ignore_patterns: []
 connections: []
 contracts:
 - ethlisbon/price_prediction:0.1.0:bafybeia3njcqwcvqvay4dluryuxfp4iajo6co2acm55okon4wyxqfktbda
-- valory/gnosis_safe:0.1.0:bafybeieh43hzlpsxcbaw76jjctltpyhqaxcjgpv5s7x4j5avqijh52md24
+- valory/gnosis_safe:0.1.0:bafybeia45l2qlgbz5syfthhzqwk3vpx357rceu2kiv4zuhh2brs6pvjvxy
 protocols:
 - valory/contract_api:1.0.0:bafybeiaxbrvgtbdrh4lslskuxyp4awyr4whcx3nqq5yrr6vimzsxg5dy64
 skills:
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
-- valory/safe_deployment_abci:0.1.0:bafybeidmp6s7okvn6ucbyk74f7ldyaniglv27bnfrht7mynaosqtwl5dji
-- valory/transaction_settlement_abci:0.1.0:bafybeidfko3dboias2tupaehnftzbg4f7jui5753pc7tl2o5oex37l6dre
+- valory/safe_deployment_abci:0.1.0:bafybeiccqsdx4quw7pmb6kw7e5eqa7q7ssirjxmx7pqswdvui77d6nugfy
+- valory/transaction_settlement_abci:0.1.0:bafybeigzljac4k6rd4bnynkwb7akrqubdam4trdcy7vyaiirehlumnjqsa
 behaviours:
   main:
     args: {}
@@ -102,7 +101,7 @@ models:
       max_healthcheck: 120
       observation_interval: 10
       on_chain_service_id: null
-      price_prediction_contract_address: '0xd87bEe9DDD28773ac2EBEE70AE005F2DeB46B400'
+      price_prediction_contract_address: '0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db'
       reset_tendermint_after: 2
       retry_attempts: 400
       retry_timeout: 3

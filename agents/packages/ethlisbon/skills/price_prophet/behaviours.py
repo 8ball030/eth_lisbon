@@ -124,7 +124,7 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
             content = df[cols].to_json()  # must remove duplicate column names
             sender = self.context.agent_address
             payload = AnnotateDataPayload(sender=sender, content=hash(content))
-            self.context.logger.info(f"Annotated data: {content}")
+            self.context.logger.debug(f"Annotated data: {content}")
             self.file_path_for_storage.write_text(content)
             self.context.logger.info(f"Annotated data written to: {self.file_path_for_storage}")
 
@@ -206,7 +206,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
             df["timestamp"] = df["timestamp"].astype(int) // 10 ** 9  # unix_sec
             sender, content = self.context.agent_address, df.to_json()
             payload = RequestDataPayload(sender=sender, content=content)
-            self.context.logger.info(f"Data retrieved: {content}")
+            self.context.logger.info(f"Data retrieved: {len(content)}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -348,10 +348,13 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
         """Get the tx data."""
 
         most_voted: JSONLike = self.get_strict(PredictionRound.selection_key)
-        predictions: pd.Series = pd.read_json(most_voted)
+        prediction: pd.Series =  pd.DataFrame(json.loads(most_voted), index=[0]).transpose().mean()
 
-        rate_of_change = linregress(predictions.reset_index()).slope
-        price = predictions[-1]
+        observations: JSONLike = self.get_strict(RequestDataRound.selection_key)
+        current_price: float = pd.read_json(observations).iloc[-1].close
+
+        rate_of_change = int(((prediction - current_price) / current_price) * 10000)
+        price = int(prediction[0] * 10000)
         response = yield from self.get_contract_api_response(
             performative=ContractApiMessage.Performative.GET_STATE,  # type: ignore
             contract_id=str(PricePredictionContract.contract_id),
