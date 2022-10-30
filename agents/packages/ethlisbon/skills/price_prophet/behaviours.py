@@ -99,7 +99,7 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         """Get strict from SynchronizedData"""
         return self.synchronized_data.db.get_strict(key)
 
-    @functools.cached_property
+    @property
     def file_path_for_storage(self):
         """File path for storage"""
         file_path = Path("price_prophet.csv")
@@ -250,7 +250,7 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             random_state = self.synchronized_data.period_count
             try:
-                results_grid = train_model(pd.read_json(self.local_data_for_storage), random_state)
+                results_grid = train_model(pd.read_json(".csv"), random_state)
                 self.context.shared_state[TrainModelRound.selection_key] = results_grid
             except Exception as e:
                 results_grid = None
