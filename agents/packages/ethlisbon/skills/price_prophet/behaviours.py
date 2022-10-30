@@ -366,18 +366,16 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
 class ValidateDataBehaviour(PriceProphetBaseBehaviour):
     """ValidateDataBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "validate_data"
     matching_round: Type[AbstractRound] = ValidateDataRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            most_voted = self.get_strict(StoreDataRound.selection_key)
             sender = self.context.agent_address
-            payload = ValidateDataPayload(sender=sender, content=...)
+            payload = ValidateDataPayload(sender=sender, content=most_voted)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
