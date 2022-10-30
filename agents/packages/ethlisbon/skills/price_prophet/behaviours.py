@@ -183,8 +183,8 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             result = requests.get(self.endpoint_url)
             data: List[List[float]] = json.loads(result.content)["result"]
-            content = pd.DataFrame(data, columns=COLUMNS).to_json()
-            sender = self.context.agent_address
+            df = pd.DataFrame(data).rename(columns=dict(time="timestamp")).drop("startTime", axis=1)
+            sender, content = self.context.agent_address, df.to_json()
             payload = RequestDataPayload(sender=sender, content=content)
             self.context.logger.info(f"Data retrieved: {content}")
 
