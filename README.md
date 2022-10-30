@@ -46,8 +46,8 @@ function create_keys {
     aea generate-key ethereum && \
     aea add-key ethereum && \
     echo "" && echo "created: $1"
-    echo "    private key: $(cat cosmos_private_key.txt | tr -d \\n )" && \
-    echo "    public key:  $(aea get-public-key cosmos)" && \
+    echo "    private key: $(cat ethereum_private_key.txt | tr -d \\n )" && \
+    echo "    public key:  $(aea get-public-key ethereum)" && \
     echo "" && cd ../ && rm -r $1
 }
 
