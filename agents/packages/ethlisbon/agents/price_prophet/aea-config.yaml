@@ -28,12 +28,12 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeih7rhi5zvfvwakx5ifgxsz2cfipeecsh7bm3gnudjxtvhrygpcftq
 - valory/tendermint:0.1.0:bafybeihcnjhovvyyfbkuw5sjyfx2lfd4soeocfqzxz54g67333m6nk5gxq
 skills:
-- ethlisbon/price_prophet:0.1.0:bafybeiasdas7wwkrqzmidzvcvag52wph3povd65zqo2rhjskx53r2ognt4
+- ethlisbon/price_prophet:0.1.0:bafybeihwcy66qq5cbyuwnkbur4tcor5y4xxah27czmy3hwktmsrkb6ri4y
 - valory/abstract_abci:0.1.0:bafybeiagrbn76jal52v2egtuwelcam3e2huzc6pwjtux2dh5hktxn7em3y
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
-- valory/safe_deployment_abci:0.1.0:bafybeid7de7vp6qqnbcnvfey2fbaxm4hb4uplrjjdjbhxh3ulfdlqmdpr4
-- valory/transaction_settlement_abci:0.1.0:bafybeibqv6yo546f45zdqp777mzk3rxpluymjqn5mvh37xjccfafwuciy4
+- valory/safe_deployment_abci:0.1.0:bafybeihllmy6iw76xo527oehxxlmlkks4dgdnim4yhjztr5tppx6z3anju
+- valory/transaction_settlement_abci:0.1.0:bafybeief77gt2a52t75umnxdhqmmwnhla374frdaf7un4q3hwzrddkknme
 default_ledger: ethereum
 required_ledgers:
 - ethereum
