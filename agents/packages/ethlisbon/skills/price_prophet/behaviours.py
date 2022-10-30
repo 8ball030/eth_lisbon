@@ -153,6 +153,7 @@ class ModelValidationBehaviour(PriceProphetBaseBehaviour):
             forecaster.set_lags(results_grid.lags[0])
             sender = self.context.agent_address
             payload = ModelValidationPayload(sender=sender, content=True)
+            self.context.logger.info(f"Model validation: {results_grid}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -175,6 +176,7 @@ class PredictionBehaviour(PriceProphetBaseBehaviour):
             predictions = forecaster.predict(steps=STEPS_INTO_THE_FUTURE)
             sender, content = self.context.agent_address, predictions.to_json()
             payload = PredictionPayload(sender=sender, content=content)
+            self.context.logger.info(f"Price predictions: {predictions}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -206,7 +208,7 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
             df["timestamp"] = df["timestamp"].astype(int) // 10 ** 9  # unix_sec
             sender, content = self.context.agent_address, df.to_json()
             payload = RequestDataPayload(sender=sender, content=content)
-            self.context.logger.info(f"Data retrieved: {len(content)}")
+            self.context.logger.info(f"Data retrieved: {df}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -414,7 +416,7 @@ class WeightSharingBehaviour(PriceProphetBaseBehaviour):
             results_grid: pd.DataFrame = self.context.shared_state[TrainModelRound.selection_key]
             sender, content = self.context.agent_address, results_grid.to_json()
             payload = WeightSharingPayload(sender=sender, content=content)
-            self.context.logger.info(f"Sharing weights: {content}")
+            self.context.logger.info(f"Sharing weights: {results_grid}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
