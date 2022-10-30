@@ -19,6 +19,7 @@
 
 """Machine learning tools for agent behaviours of the PriceProphetABCIApp"""
 
+import time
 from typing import Tuple
 import logging
 
@@ -126,7 +127,8 @@ def train_model(x: pd.DataFrame, random_state: int):
     """Train model"""
 
     # currently we interpolate and discard features with NaN
-    x_imputed = impute(x)
+    x_imputed = x.dropna(axis=1, how="all").dropna()
+    x_imputed.reset_index(drop=True, inplace=True)  # for forecaster
     x_train, x_test = split_train_test(x_imputed)
     forecaster.regressor.random_state = random_state
 
@@ -136,7 +138,7 @@ def train_model(x: pd.DataFrame, random_state: int):
         forecaster=forecaster,
         y=x_train[Y_TARGET],
         param_grid=PARAM_GRID,
-        lags_grid=[10, 20],
+        lags_grid=LAGS_GRID,
         steps=STEPS_INTO_THE_FUTURE,
         refit=True,  # set False to speed up
         metric="mean_squared_error",
@@ -158,7 +160,9 @@ def test_dev():
     df = pd.DataFrame(data, columns=COLUMNS)
     transformed_data = compute_indicators(df)
 
-    X = impute(transformed_data)
+    # X = impute(transformed_data)
+    X = transformed_data.dropna(axis=1, how="all").dropna()
+    X = X.reset_index(drop=True)
 
     X_train, X_test = split_train_test(X)
 
@@ -182,6 +186,7 @@ def test_dev():
     score = mean_squared_error(y_true=X_test[Y_TARGET], y_pred=predictions)
     logging.error(f"MSE: {score}")
 
+    t0 = time.time()
     results_grid = grid_search_forecaster(
         forecaster=forecaster,
         y=X_train[Y_TARGET],
@@ -195,6 +200,7 @@ def test_dev():
         return_best=True,
         verbose=False,
     )
+    logging.error(f"Time to search: {time.time() - t0}")
 
     predictions = forecaster.predict(steps=STEPS_INTO_THE_FUTURE)
     feature_importance = forecaster.get_feature_importance()
