@@ -154,13 +154,13 @@ class PredictionBehaviour(PriceProphetBaseBehaviour):
     behaviour_id: str = "prediction"
     matching_round: Type[AbstractRound] = PredictionRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            sender = self.context.agent_address
-            payload = PredictionPayload(sender=sender, content=...)
+            predictions = forecaster.predict(steps=STEPS_INTO_THE_FUTURE)
+            sender, content = self.context.agent_address, predictions.to_json()
+            payload = PredictionPayload(sender=sender, content=content)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
