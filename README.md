@@ -1,4 +1,4 @@
-# PriceProphet
+# ![](./frontend/Logo_ETH_Lisbon.webp) PriceProphet ![](./frontend/Logo_ETH_Lisbon.webp)
 Hackathon repository for ETH Lisbon 2022
 
 
@@ -27,6 +27,27 @@ It is an agent system that polls cryptocurrency price data from different exchan
 
 # Run the Application
 Run the entire stack with the following commands
+
+
+## Requirements
+
+- Ensure your machine satisfies the following requirements:
+
+    - Python `>= 3.7`
+    - [Tendermint](https://docs.tendermint.com/master/introduction/install.html) `==0.34.19`
+    - [IPFS node](https://docs.ipfs.io/install/command-line/#official-distributions) `==v0.6.0`
+    - [Pip](https://pip.pypa.io/en/stable/installation/)
+    - [Pipenv](https://pipenv.pypa.io/en/latest/install/) `>=2021.x.xx`
+    - [Go](https://go.dev/doc/install) `==1.17.7`
+    - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+    - [Docker Engine](https://docs.docker.com/engine/install/)
+    - [Docker Compose](https://docs.docker.com/compose/install/)
+    - [Skaffold](https://skaffold.dev/docs/install/#standalone-binary) `>= 1.39.1`
+    - [Gitleaks](https://github.com/zricethezav/gitleaks/releases/latest)
+
+- Clone the repository:
+
+      git clone git@github.com:8ball030/eth_lisbon.git
 
 
 ## Installation
@@ -115,6 +136,7 @@ Starting AEA 'agent' in 'async' mode...
 ...
 ```
 
+The IPFS hash traces here: [QmaDrsBBSbeuFjQuJ338ZvMJKxvZax3x3RT8XaDuhuq6hc](https://gateway.autonolas.tech/ipfs/QmaDrsBBSbeuFjQuJ338ZvMJKxvZax3x3RT8XaDuhuq6hc)
 
 
 ## An overview of the application
