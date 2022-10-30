@@ -22,6 +22,7 @@
 import time
 import json
 from typing import Generator, List, Set, Type, cast, Optional, Any
+from pathlib import Path
 
 import requests
 import pandas as pd
@@ -78,7 +79,7 @@ from packages.ethlisbon.skills.price_prophet.rounds import (
 
 SAFE_GAS = 0
 ETH_VALUE = 0
-DEFAULT_REGISTRY="/dns/registry.autonolas.tech/tcp/443/https"
+DEFAULT_REGISTRY = "/dns/registry.autonolas.tech/tcp/443/https"
 
 
 class PriceProphetBaseBehaviour(BaseBehaviour):
@@ -98,7 +99,14 @@ class PriceProphetBaseBehaviour(BaseBehaviour):
         """Get strict from SynchronizedData"""
         return self.synchronized_data.db.get_strict(key)
 
+    @property
+    def file_path_for_storage(self):
+        """File path for storage"""
+        file_path = Path("price_prophet.csv")
+        return file_path
 
+
+from collections import Counter
 class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
     """AnnotateDataBehaviour"""
 
@@ -109,11 +117,15 @@ class AnnotateDataBehaviour(PriceProphetBaseBehaviour):
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            most_voted: JSONLike = self.get_strict(StoreDataRound.selection_key)
-            content = compute_indicators(pd.read_json(most_voted)).to_json()
+            most_voted: JSONLike = self.get_strict(RequestDataRound.selection_key)
+            df = compute_indicators(pd.read_json(most_voted))
+            cols = [k for k, v in Counter(df.columns).items()  if v ==1]
+            content = df[cols].to_json()
             sender = self.context.agent_address
-            payload = AnnotateDataPayload(sender=sender, content=content)
+            payload = AnnotateDataPayload(sender=sender, content=hash(content))
             self.context.logger.info(f"Annotated data: {content}")
+            self.file_path_for_storage.write_text(content)
+            self.context.logger.info(f"Annotated data written to: {self.file_path_for_storage}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -204,24 +216,22 @@ class RequestDataBehaviour(PriceProphetBaseBehaviour):
 class StoreDataBehaviour(PriceProphetBaseBehaviour):
     """StoreDataBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "store_data"
     matching_round: Type[AbstractRound] = StoreDataRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
-        
-        breakpoint()
+
         ipfs_tool = ipfshttpclient.Client(addr=DEFAULT_REGISTRY)
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
-            res = ipfs_tool.add("data.csv", pin=True)
-            data_set = res.as_json()['Hash']
+            file = str(self.file_path_for_storage)
+            self.context.logger.info(f"Storing: {file}")
+            res = ipfs_tool.add(file, pin=True)
+            content = res.as_json()['Hash']
             sender = self.context.agent_address
-            payload = StoreDataPayload(sender=sender, content=...)
-
+            payload = StoreDataPayload(sender=sender, content=content)
+            self.context.logger.info(f"IPFS hash data: {content}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)
@@ -242,10 +252,9 @@ class TrainModelBehaviour(PriceProphetBaseBehaviour):
         # TODO: get randomness from randomness beacon
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
             random_state = self.synchronized_data.period_count
-            most_voted: JSONLike = self.get_strict(AnnotateDataRound.selection_key)
             try:
                 self.context.logger.info(f"Training, current time: {time.time()}")
-                results_grid = train_model(pd.read_json(most_voted), random_state)
+                results_grid = train_model(pd.read_json(".csv"), random_state)
                 self.context.shared_state[TrainModelRound.selection_key] = results_grid
                 self.context.logger.info(f"DONE training at: {time.time()}")
             except Exception as e:
@@ -361,18 +370,17 @@ class TransactionBehaviour(PriceProphetBaseBehaviour):
 class ValidateDataBehaviour(PriceProphetBaseBehaviour):
     """ValidateDataBehaviour"""
 
-    # TODO: set the following class attributes
-    state_id: str
     behaviour_id: str = "validate_data"
     matching_round: Type[AbstractRound] = ValidateDataRound
 
-    # TODO: implement logic required to set payload content (e.g. synchronized_data)
     def async_act(self) -> Generator:
         """Do the act, supporting asynchronous execution."""
 
         with self.context.benchmark_tool.measure(self.behaviour_id).local():
+            most_voted = self.get_strict(StoreDataRound.selection_key)
             sender = self.context.agent_address
-            payload = ValidateDataPayload(sender=sender, content=...)
+            payload = ValidateDataPayload(sender=sender, content=True)
+            self.context.logger.info(f"Validated the data : {most_voted}")
 
         with self.context.benchmark_tool.measure(self.behaviour_id).consensus():
             yield from self.send_a2a_transaction(payload)

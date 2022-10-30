@@ -7,6 +7,7 @@ aea_version: '>=1.17.0, <2.0.0'
 fingerprint: {}
 fingerprint_ignore_patterns: []
 connections:
+- ethlisbon/http_server:0.1.0:bafybeibq3bode6habdswkjjpu3ypbnlwgjejoi6xljlr5eawekdb5j4jle
 - fetchai/http_server:0.22.0:bafybeihtdignhuz6hjmay5jjcs6eqkfm4ispvk2upr3rynallaz2heo2ti
 - valory/abci:0.1.0:bafybeifdn6eyp7tw3pemycnuuh7e6iairmkdpsohjg2coyxkcmjwfpqavm
 - valory/http_client:0.23.0:bafybeihz3tubwado7j3wlivndzzuj3c6fdsp4ra5r3nqixn3ufawzo3wii
@@ -27,7 +28,7 @@ protocols:
 - valory/ledger_api:1.0.0:bafybeih7rhi5zvfvwakx5ifgxsz2cfipeecsh7bm3gnudjxtvhrygpcftq
 - valory/tendermint:0.1.0:bafybeihcnjhovvyyfbkuw5sjyfx2lfd4soeocfqzxz54g67333m6nk5gxq
 skills:
-- ethlisbon/price_prophet:0.1.0:bafybeibmrrdfcqqlkgiua5mqjpizuvfrwguf563xweewwbnu43toarl6qi
+- ethlisbon/price_prophet:0.1.0:bafybeics6w65n5cjcav64vsplvaj5jt2cd4ybkf2h5ddfia5duwn5ltaiy
 - valory/abstract_abci:0.1.0:bafybeiagrbn76jal52v2egtuwelcam3e2huzc6pwjtux2dh5hktxn7em3y
 - valory/abstract_round_abci:0.1.0:bafybeicwhcpuov2bvfwvzxdvmy6fhmijdhqi3uthee3bv4cfe7wm5fsbjy
 - valory/registration_abci:0.1.0:bafybeievtpfxmzrdueqgisebeqkefukvfhzhiczvmdnp4rerwup4v6karm
@@ -101,9 +102,16 @@ config:
   port: ${ABCI_PORT:int:26658}
   use_tendermint: ${ABCI_USE_TENDERMINT:bool:true}
 ---
-public_id: fetchai/http_server:0.22.0
+public_id: ethlisbon/http_server:0.1.0
 type: connection
 config:
   host: 0.0.0.0
   port: 5000
+  target_skill_id: ethlisbon/http_server:0.1.0
+---
+public_id: fetchai/http_server:0.22.0
+type: connection
+config:
+  host: 0.0.0.0
+  port: 5005
   target_skill_id: decentrapi/rpc_forwarding:0.1.0
