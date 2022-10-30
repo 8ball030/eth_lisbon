@@ -19,6 +19,12 @@ import { DataContext } from 'common-util/context';
 import { getContract } from 'common-util/Contracts';
 import { providerOptions } from './helpers';
 import { Container, DetailsContainer, WalletContainer } from './styles';
+import {
+  CONTRACT_ABI_GOERLI,
+  CONTRACT_ADDRESS_GOERLI,
+  MAIN_CONTRACT_ABI,
+  MAIN_CONTRACT_ADDRESS
+} from "../../common-util/AbiAndAddresses";
 
 /* --------------- web3Modal --------------- */
 let web3Modal;
@@ -92,7 +98,18 @@ const Login = ({
 
       /* --------------- Contract call --------------- */
       const contract = getContract(modalProvider, currentChainId);
-      setEventsData(contract.events);
+      const web3 = new Web3(modalProvider);
+
+      const safeContract = new web3.eth.Contract(
+          MAIN_CONTRACT_ABI,
+          "0xd87bee9ddd28773ac2ebee70ae005f2deb46b400",
+      );
+      const events = await safeContract.getPastEvents("ExecutionSuccess", {
+        fromBlock: 5327000,
+        toBlock: "latest",
+      });
+      console.log(events);
+      setEventsData(events);
 
       const predictedPrc = await contract.methods.getPriceData().call();
       setPredictedData(predictedPrc);

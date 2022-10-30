@@ -1,4 +1,4 @@
-export const MAIN_CONTRACT_ADDRESS = '0x72dA4693A52e1e4aE8D1a00fdFb9Df5E39baa544';
+export const MAIN_CONTRACT_ADDRESS = '0xacf6f2b3dfcc96dce5bdffc422cbdd3b179727db';
 
 export const MAIN_CONTRACT_ABI = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
@@ -26,6 +26,25 @@ export const MAIN_CONTRACT_ABI = [
     ],
     name: 'LogPriceDataUpdated',
     type: 'event',
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "txHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "payment",
+        "type": "uint256"
+      }
+    ],
+    "name": "ExecutionSuccess",
+    "type": "event"
   },
   {
     anonymous: false,
