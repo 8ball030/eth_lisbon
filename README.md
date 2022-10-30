@@ -51,7 +51,7 @@ function create_keys {
     echo "" && cd ../ && rm -r $1
 }
 
-setup my_agent
+create_keys my_agent
 ```
 
 the output should look as follows:
