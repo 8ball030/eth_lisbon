@@ -8,7 +8,6 @@ fingerprint: {}
 fingerprint_ignore_patterns: []
 connections:
 - ethlisbon/http_server:0.1.0:bafybeibq3bode6habdswkjjpu3ypbnlwgjejoi6xljlr5eawekdb5j4jle
-- fetchai/http_server:0.22.0:bafybeihtdignhuz6hjmay5jjcs6eqkfm4ispvk2upr3rynallaz2heo2ti
 - valory/abci:0.1.0:bafybeifdn6eyp7tw3pemycnuuh7e6iairmkdpsohjg2coyxkcmjwfpqavm
 - valory/http_client:0.23.0:bafybeihz3tubwado7j3wlivndzzuj3c6fdsp4ra5r3nqixn3ufawzo3wii
 - valory/ledger:0.19.0:bafybeihmz5us4ntmzvgikpkx4tththrl7zvou4uiebvletdeliidiuhi6m
@@ -107,11 +106,4 @@ type: connection
 config:
   host: 0.0.0.0
   port: 5000
-  target_skill_id: ethlisbon/http_server:0.1.0
----
-public_id: fetchai/http_server:0.22.0
-type: connection
-config:
-  host: 0.0.0.0
-  port: 5005
-  target_skill_id: decentrapi/rpc_forwarding:0.1.0
+  target_skill_id: ethlisbon/http_echo:0.1.0
