@@ -39,11 +39,11 @@ const LineChart = ({ ftxData }) => {
       <Row gutter={16}>
         <ValueCard
           title="Predicted Price"
-          price={get(predictedData, 'price') || 0}
+          price={get(predictedData, 'price') / 10000 || 0}
         />
         <ValueCard
           title="Last Predicted Price"
-          price={get(lastPredictedPrice, 'price') || 0}
+          price={get(lastPredictedPrice, 'price') / 10000 || 0}
         />
         <ValueCard
           title="Actual Price"

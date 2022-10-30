@@ -22,9 +22,13 @@ const columns = [
 
 const EventsTable = () => {
   const { eventsData } = useContext(DataContext);
-  const data = eventsData
-    .map((e) => ({ events: e.transactionHash, key: e.blockNumber }));
-
+  let data = [];
+  try {
+    data = eventsData
+      .map((e) => ({ events: e.transactionHash, key: e.blockNumber }));
+  } catch (e) {
+    console.log(e);
+  }
   return (
     <Table
       columns={columns}
