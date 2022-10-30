@@ -22,9 +22,8 @@ const columns = [
 
 const EventsTable = () => {
   const { eventsData } = useContext(DataContext);
-  const data = Object.keys(eventsData)
-    .filter((e) => e.match(/^0x([A-Fa-f0-9]{64})$/))
-    .map((e) => ({ events: e, key: e }));
+  const data = eventsData
+    .map((e) => ({ events: e.transactionHash, key: e.blockNumber }));
 
   return (
     <Table

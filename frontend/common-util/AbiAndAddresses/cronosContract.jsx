@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS_GOERLI = '0x72dA4693A52e1e4aE8D1a00fdFb9Df5E39baa544';
+export const CONTRACT_ADDRESS_GOERLI = '0xacf6f2b3dfcc96dce5bdffc422cbdd3b179727db';
 
 export const CONTRACT_ABI_GOERLI = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
