@@ -11,6 +11,10 @@ The PriceProphet is a price prediction oracle.
 
 It is an agent system that polls cryptocurrency price data from different exchanges, annotates it, stores the annotated data on IPFS nodes, and trains a model to estimate the future price. 
 
+![Price Prohet flow chart](./miscellaneous/priceProhetDiagram.png) 
+
+A short video about Price Prohet can be found unter [this link](https://drive.google.com/file/d/1QyVDWoqrbO1sny8METzD5_V0kQqIvW_W/view?usp=share_link).
+
 
 ## PriceProphet Frontend
 
@@ -23,6 +27,10 @@ It is an agent system that polls cryptocurrency price data from different exchan
 
 2. Price Prediction Contract
    [0xACF6F2b3dfCC96DcE5BdFFC422cbDd3b179727db](https://cronoscan.com/address/0xacf6f2b3dfcc96dce5bdffc422cbdd3b179727db)
+
+3. Price Oracle Storage Contract 
+    [ready for deployment on iExec](./contracts/contracts/PriceOracleStorage.sol)
+    
 
 
 # Run the Application
